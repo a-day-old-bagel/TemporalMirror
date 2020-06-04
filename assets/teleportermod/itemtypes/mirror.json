@@ -4,7 +4,7 @@
 	shape: { base: "item/mirror" },
     creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
     maxstacksize: 1,
-    durability: 10,
+    durability: 5,
     attributes: {
         rackable: true,
         toolrackTransform: {
