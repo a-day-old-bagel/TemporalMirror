@@ -1,0 +1,40 @@
+{
+    code: "mirror",
+    class: "ItemMirror",
+	shape: { base: "item/mirror" },
+    creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+    maxstacksize: 1,
+    durability: 10,
+    attributes: {
+        rackable: true,
+        toolrackTransform: {
+            translation: { x: 0.025, y: 0.5, z: 0 },
+            rotation: { x: 0, y: -135, z: 182 },
+            origin: { x: 0.5, y: 0.0315, z: 0.5 },
+            scale: 1
+        }
+    },
+    fpHandTransform: {
+        translation: { x: 0, y: 0.1, z: -0.8 },
+        rotation: { x: 59, y: 27, z: 26},
+        origin: { x: 0.5, y: 0.0315, z: 0.5 },
+        scale: 3
+    },
+    tpHandTransform: {
+        translation: { x: -1.15, y: 0.1, z: -0.67 },
+        rotation: { x: 4, y: -55, z: 15},
+        origin: { x: 0.5, y: 0.0315, z: 0.5 },
+        scale: 0.8
+    },
+    groundTransform: {
+        translation: { x: 0, y: 1, z: 0 },
+        origin: { x: 0.5, y: 0.0315, z: 0.5 },
+        scale: 3
+    },
+    guiTransform: {
+        translation: { x: 1, y: 2, z: 0 },
+        rotation: { x: 90, y: -90, z: 0},
+        origin: { x: 0.5, y: 0.0315, z: 0.5 },
+        scale: 1.5
+    }
+}

@@ -1,0 +1,10 @@
+﻿{
+    ingredientPattern: "G,S",
+    ingredients: {
+        "S": { type: "block", code: "game:sign-ground-north" },
+        "G": { type: "item", code: "game:gear-temporal" }
+    },
+    width: 1,
+    height: 2,
+    output: { type: "item", code: "mirror" }
+}

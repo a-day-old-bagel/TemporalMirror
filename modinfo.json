@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "modid": "teleportermod",
+  "name": "Temporal Mirror",
+  "author": "DArkHekRoMaNT",
+  "description": "Add mirror for teleportation",
+  "version": "1.0.0",
+  "dependency": {
+    "game": "1.12.14"
+  },
+  "website": "https://www.vintagestory.at/forums/topic/2160-temporal-mirror/"
+}
