@@ -1,5 +1,36 @@
 {
-    "item-mirror": "Темпоральное Зеркало",
+    "item-mirror-magic-wood": "Темпоральное Зеркало (Дерево)",
+    "item-mirror-magic-copper": "Темпоральное Зеркало (Медь)",
+    "item-mirror-magic-tinbronze": "Темпоральное Зеркало (Оловянная бронза)",
+    "item-mirror-magic-bismuthbronze": "Темпоральное Зеркало (Висмутовая бронза)",
+    "item-mirror-magic-blackbronze": "Темпоральное Зеркало (Черная бронза)",
+    "item-mirror-magic-silver": "Темпоральное Зеркало (Серебро)",
+    "item-mirror-magic-gold": "Темпоральное Зеркало (Золото)",
+    "item-mirror-magic-iron": "Темпоральное Зеркало (Железо)",
+    "item-mirror-wormhole-wood": "Зеркало-червоточина (Дерево)",
+    "item-mirror-wormhole-copper": "Зеркало-червоточина (Медь)",
+    "item-mirror-wormhole-tinbronze": "Зеркало-червоточина (Оловянная бронза)",
+    "item-mirror-wormhole-bismuthbronze": "Зеркало-червоточина (Висмутовая бронза)",
+    "item-mirror-wormhole-blackbronze": "Зеркало-червоточина (Черная бронза)",
+    "item-mirror-wormhole-gold": "Зеркало-червоточина (Золото)",
+    "item-mirror-wormhole-silver": "Зеркало-червоточина (Серебро)",
+    "item-mirror-wormhole-iron": "Зеркало-червоточина (Железо)",
+    "item-mirror-frame-wood": "Рамка для для зеркала (Дерево)",
+    "item-mirror-frame-copper": "Рамка для зеркала (Медь)",
+    "item-mirror-frame-tinbronze": "Рамка для зеркала (Оловянная бронза)",
+    "item-mirror-frame-bismuthbronze": "Рамка для зеркала (Висмутовая бронза)",
+    "item-mirror-frame-blackbronze": "Рамка для зеркала (Черная бронза)",
+    "item-mirror-frame-gold": "Рамка для зеркала (Золото)",
+    "item-mirror-frame-silver": "Рамка для зеркала (Серебро)",
+    "item-mirror-frame-iron": "Рамка для зеркала (Железо)",
+
+
+
+    "block-toolmold-raw-mirror": "Форма для зеркала (необожженная)",
+    "block-toolmold-burned-mirror": "Форма для зеркала (обожженная)",
+
+
     "heldhelp-savepoint": "Сохранить точку",
-    "heldhelp-teleport": "Вернуться"
+    "heldhelp-teleport": "Вернуться",
+    "heldhelp-teleport-to-player": "Телепортироваться к игроку"
 }

@@ -1,5 +1,36 @@
 {
-	"item-mirror": "Temporal Mirror",
-	"heldhelp-savepoint": "Save point",
-    "heldhelp-teleport": "Return"
+    "teleportermoditem-mirror-magic-wood": "Temporal Mirror (Wood)",
+    "teleportermoditem-mirror-magic-copper": "Temporal Mirror (Copper)",
+    "teleportermoditem-mirror-magic-tinbronze": "Temporal Mirror (Tinbronze)",
+    "teleportermoditem-mirror-magic-bismuthbronze": "Temporal Mirror (Bismuthbronze)",
+    "teleportermoditem-mirror-magic-blackbronze": "Temporal Mirror (Blackbronze)",
+    "teleportermoditem-mirror-magic-silver": "Temporal Mirror (Silver)",
+    "teleportermoditem-mirror-magic-gold": "Temporal Mirror (Gold)",
+    "teleportermoditem-mirror-magic-iron": "Temporal Mirror (Iron)",
+    "teleportermoditem-mirror-wormhole-wood": "Wormhole Mirror (Wood)",
+    "teleportermoditem-mirror-wormhole-copper": "Wormhole Mirror (Copper)",
+    "teleportermoditem-mirror-wormhole-tinbronze": "Wormhole Mirror (Tinbronze)",
+    "teleportermoditem-mirror-wormhole-bismuthbronze": "Wormhole Mirror (Bismuthbronze)",
+    "teleportermoditem-mirror-wormhole-blackbronze": "Wormhole Mirror (Blackbronze)",
+    "teleportermoditem-mirror-wormhole-gold": "Wormhole Mirror (Gold)",
+    "teleportermoditem-mirror-wormhole-silver": "Wormhole Mirror (Silver)",
+    "teleportermoditem-mirror-wormhole-iron": "Wormhole Mirror (Iron)",
+    "teleportermoditem-mirror-frame-wood": "Mirror Frame (Wood)",
+    "teleportermoditem-mirror-frame-copper": "Mirror Frame (Copper)",
+    "teleportermoditem-mirror-frame-tinbronze": "Mirror Frame (Tinbronze)",
+    "teleportermoditem-mirror-frame-bismuthbronze": "Mirror Frame (Bismuthbronze)",
+    "teleportermoditem-mirror-frame-blackbronze": "Mirror Frame (Blackbronze)",
+    "teleportermoditem-mirror-frame-gold": "Mirror Frame (Gold)",
+    "teleportermoditem-mirror-frame-silver": "Mirror Frame (Silver)",
+    "teleportermoditem-mirror-frame-iron": "Mirror Frame (Iron)",
+
+
+
+    "teleportermodblock-toolmold-raw-mirror": "Mirror mold (Raw)",
+    "teleportermodblock-toolmold-burned-mirror": "Mirror mold (Fired)",
+
+
+    "heldhelp-savepoint": "Save point",
+    "heldhelp-teleport": "Return",
+    "heldhelp-teleport-to-player": "Teleport to player"
 }

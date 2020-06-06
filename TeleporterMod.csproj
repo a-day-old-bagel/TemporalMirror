@@ -83,16 +83,27 @@
     <Folder Include="assets\teleportermod\shapes\item\" />
     <Folder Include="assets\teleportermod\recipes\" />
     <Folder Include="assets\teleportermod\recipes\grid\" />
+    <Folder Include="assets\teleportermod\recipes\smithing\" />
+    <Folder Include="assets\teleportermod\recipes\clayforming\" />
+    <Folder Include="assets\teleportermod\blocktypes\" />
+    <Folder Include="assets\teleportermod\shapes\block\" />
+    <Folder Include="assets\teleportermod\shapes\block\mold\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\teleportermod\lang\en.json" />
     <None Include="assets\teleportermod\itemtypes\mirror.json" />
     <None Include="assets\teleportermod\sounds\teleport.ogg" />
-    <None Include="assets\teleportermod\recipes\grid\mirror.json" />
+    <None Include="assets\teleportermod\recipes\grid\mirror-magic.json" />
     <None Include="assets\teleportermod\shapes\item\mirror.json" />
-    <None Include="assets\teleportermod\textures\item\mirror\frame.png" />
-    <None Include="assets\teleportermod\textures\item\mirror\glass.png" />
     <None Include="assets\teleportermod\lang\ru.json" />
+    <None Include="assets\teleportermod\recipes\smithing\mirror-frame.json" />
+    <None Include="assets\teleportermod\recipes\clayforming\mirror-frame.json" />
+    <None Include="assets\teleportermod\recipes\grid\mirror-magic-wood-frame.json" />
+    <None Include="assets\teleportermod\textures\item\mirror\magic.png" />
+    <None Include="assets\teleportermod\textures\item\mirror\wormhole.png" />
+    <None Include="assets\teleportermod\textures\item\mirror\frame.png" />
+    <None Include="assets\teleportermod\blocktypes\toolmold.json" />
+    <None Include="assets\teleportermod\shapes\block\mold\mirror.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\TeleporterMod.cs" />

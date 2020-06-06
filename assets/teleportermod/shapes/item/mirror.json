@@ -8,8 +8,8 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"glass": "item/mirror/glass",
-		"frame": "item/mirror/frame"
+		"glass": "item/mirror/magic",
+		"frame": "game:item/tool/material/wood"
 	},
 	"elements": [
 		{
@@ -18,12 +18,12 @@
 			"to": [ 0.0, 0.0, 0.0 ], 
 			"rotationOrigin": [ 8.0, 0.5, 8.0 ],
 			"faces": {
-				"north": { "texture": "#null", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
-				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
-				"south": { "texture": "#null", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
-				"west": { "texture": "#null", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
-				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
-				"down": { "texture": "#null", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+				"north": { "texture": "#frame", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+				"east": { "texture": "#frame", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+				"south": { "texture": "#frame", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+				"west": { "texture": "#frame", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+				"up": { "texture": "#frame", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+				"down": { "texture": "#frame", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
 			},
 			"children": [
 				{
@@ -32,12 +32,12 @@
 					"to": [ 0.0, 0.0, 0.0 ], 
 					"rotationOrigin": [ 8.0, 0.25, 8.0 ],
 					"faces": {
-						"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-						"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-						"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-						"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-						"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.0, 0.0 ], "snapUv": false },
-						"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+						"north": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"east": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"south": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"west": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"up": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.0, 0.0 ], "snapUv": false },
+						"down": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
 					},
 					"children": [
 						{
@@ -690,12 +690,12 @@
 					"to": [ 0.0, -0.4, 0.0 ], 
 					"rotationOrigin": [ 0.0, -0.4, 0.0 ],
 					"faces": {
-						"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false }
+						"north": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"east": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"south": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"west": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"up": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"down": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false }
 					},
 					"children": [
 						{
@@ -902,12 +902,12 @@
 					"to": [ 0.0, 0.0, 0.0 ], 
 					"rotationOrigin": [ 0.0, 3.0, 0.0 ],
 					"faces": {
-						"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-						"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
-						"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false }
+						"north": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"east": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"south": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"west": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"up": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+						"down": { "texture": "#frame", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false }
 					},
 					"children": [
 						{

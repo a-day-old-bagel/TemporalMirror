@@ -1,10 +1,27 @@
 {
     code: "mirror",
     class: "ItemMirror",
-	shape: { base: "item/mirror" },
+    variantgroups: [
+        { code: "type", states: ["frame", "magic", "wormhole"] },
+        { code: "material", states: ["wood", "copper", "tinbronze", "bismuthbronze", "blackbronze", "gold", "silver", "iron" ] }
+    ],
+    textures: {
+        "glass": { base: "item/mirror/{type}"},
+        "frame": { base: "game:item/tool/material/{material}" }
+    },
+    shape: { base: "item/mirror" },
     creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
     maxstacksize: 1,
-    durability: 5,
+    durabilityByType: {
+        "*-wood": 1,
+        "*-copper": 2,
+        "*-tinbronze": 3,
+        "*-gold": 3,
+        "*-silver": 3,
+        "*-bismuthbronze": 3,
+        "*-blackbronze": 5,
+        "*-iron": 10
+    },
     attributes: {
         rackable: true,
         toolrackTransform: {
@@ -27,7 +44,8 @@
         scale: 0.8
     },
     groundTransform: {
-        translation: { x: 0, y: 1, z: 0 },
+        translation: { x: 0, y: 0.025, z: 0 },
+        rotation: { x: 0, y: 0, z: 0},
         origin: { x: 0.5, y: 0.0315, z: 0.5 },
         scale: 3
     },
