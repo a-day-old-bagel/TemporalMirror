@@ -1,0 +1,36 @@
+{
+    "teleportermoditem-mirror-magic-wood": "Temporal Mirror (Wood)",
+    "teleportermoditem-mirror-magic-copper": "Temporal Mirror (Copper)",
+    "teleportermoditem-mirror-magic-tinbronze": "Temporal Mirror (Tinbronze)",
+    "teleportermoditem-mirror-magic-bismuthbronze": "Temporal Mirror (Bismuthbronze)",
+    "teleportermoditem-mirror-magic-blackbronze": "Temporal Mirror (Blackbronze)",
+    "teleportermoditem-mirror-magic-silver": "Temporal Mirror (Silver)",
+    "teleportermoditem-mirror-magic-gold": "Temporal Mirror (Gold)",
+    "teleportermoditem-mirror-magic-iron": "Temporal Mirror (Iron)",
+    "teleportermoditem-mirror-wormhole-wood": "[WIP] Wormhole Mirror (Wood)",
+    "teleportermoditem-mirror-wormhole-copper": "[WIP] Wormhole Mirror (Copper)",
+    "teleportermoditem-mirror-wormhole-tinbronze": "[WIP] Wormhole Mirror (Tinbronze)",
+    "teleportermoditem-mirror-wormhole-bismuthbronze": "[WIP] Wormhole Mirror (Bismuthbronze)",
+    "teleportermoditem-mirror-wormhole-blackbronze": "[WIP] Wormhole Mirror (Blackbronze)",
+    "teleportermoditem-mirror-wormhole-gold": "[WIP] Wormhole Mirror (Gold)",
+    "teleportermoditem-mirror-wormhole-silver": "[WIP] Wormhole Mirror (Silver)",
+    "teleportermoditem-mirror-wormhole-iron": "[WIP] Wormhole Mirror (Iron)",
+    "teleportermoditem-mirror-frame-wood": "Mirror Frame (Wood)",
+    "teleportermoditem-mirror-frame-copper": "Mirror Frame (Copper)",
+    "teleportermoditem-mirror-frame-tinbronze": "Mirror Frame (Tinbronze)",
+    "teleportermoditem-mirror-frame-bismuthbronze": "Mirror Frame (Bismuthbronze)",
+    "teleportermoditem-mirror-frame-blackbronze": "Mirror Frame (Blackbronze)",
+    "teleportermoditem-mirror-frame-gold": "Mirror Frame (Gold)",
+    "teleportermoditem-mirror-frame-silver": "Mirror Frame (Silver)",
+    "teleportermoditem-mirror-frame-iron": "Mirror Frame (Iron)",
+
+
+
+    "teleportermodblock-toolmold-raw-mirror": "Mirror mold (Raw)",
+    "teleportermodblock-toolmold-burned-mirror": "Mirror mold (Fired)",
+
+
+    "heldhelp-savepoint": "Save point",
+    "heldhelp-teleport": "Return",
+    "heldhelp-teleport-to-player": "Teleport to player"
+}

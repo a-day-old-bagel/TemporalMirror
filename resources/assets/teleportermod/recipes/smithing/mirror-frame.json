@@ -1,0 +1,10 @@
+{
+	ingredient: { type: "item", code: "game:ingot-*", name: "metal", allowedVariants: ["copper", "tinbronze", "bismuthbronze", "blackbronze", "silver", "gold", "iron"] },
+	pattern: [[
+		"____#####",
+		"#####___#",
+		"____#####",
+	]],
+	name: "Plate",
+	output: { type: "item", code: "mirror-frame-{metal}" }
+}

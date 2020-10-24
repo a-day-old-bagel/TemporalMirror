@@ -1,118 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{a7b06fe8-222a-44a2-96dd-a82da7c52460}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>teleportermod</RootNamespace>
-    <AssemblyName>teleportermod</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\teleportermod\</OutputPath>
-    <IntermediateOutputPath>..\..\obj\Debug\teleportermod\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\teleportermod\</OutputPath>
-    <IntermediateOutputPath>..\..\obj\Release\teleportermod\</IntermediateOutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Reference Include="System" />
-
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-
-
-    <Reference Include="Microsoft.CSharp" />
-
-    <Reference Include="System.Data" />
-
-    <Reference Include="System.Net.Http" />
-
-    <Reference Include="System.Xml" />
-
     <Reference Include="VintagestoryAPI">
-      <HintPath>/home/dark/ApplicationData/vintagestory/VintagestoryAPI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
     </Reference>
-
-    <Reference Include="VSSurvivalMod">
-      <HintPath>/home/dark/ApplicationData/vintagestory/Mods\VSSurvivalMod.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-
-    <Reference Include="VSEssentials">
-      <HintPath>/home/dark/ApplicationData/vintagestory/Mods\VSEssentials.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-
-    <Reference Include="VSCreativeMod">
-      <HintPath>/home/dark/ApplicationData/vintagestory/Mods\VSCreativeMod.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>/home/dark/ApplicationData/vintagestory/Lib\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="assets\" />
-    <Folder Include="src\" />
-    <Content Include="modinfo.json" />
-    <Folder Include="assets\teleportermod\itemtypes\" />
-    <Folder Include="src\Item\" />
-    <Folder Include="assets\teleportermod\textures\item\" />
-    <Folder Include="assets\teleportermod\shapes\item\" />
-    <Folder Include="assets\teleportermod\recipes\" />
-    <Folder Include="assets\teleportermod\recipes\grid\" />
-    <Folder Include="assets\teleportermod\recipes\smithing\" />
-    <Folder Include="assets\teleportermod\recipes\clayforming\" />
-    <Folder Include="assets\teleportermod\blocktypes\" />
-    <Folder Include="assets\teleportermod\shapes\block\" />
-    <Folder Include="assets\teleportermod\shapes\block\mold\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\teleportermod\lang\en.json" />
-    <None Include="assets\teleportermod\itemtypes\mirror.json" />
-    <None Include="assets\teleportermod\sounds\teleport.ogg" />
-    <None Include="assets\teleportermod\recipes\grid\mirror-magic.json" />
-    <None Include="assets\teleportermod\shapes\item\mirror.json" />
-    <None Include="assets\teleportermod\lang\ru.json" />
-    <None Include="assets\teleportermod\recipes\smithing\mirror-frame.json" />
-    <None Include="assets\teleportermod\recipes\clayforming\mirror-frame.json" />
-    <None Include="assets\teleportermod\recipes\grid\mirror-magic-wood-frame.json" />
-    <None Include="assets\teleportermod\textures\item\mirror\magic.png" />
-    <None Include="assets\teleportermod\textures\item\mirror\wormhole.png" />
-    <None Include="assets\teleportermod\textures\item\mirror\frame.png" />
-    <None Include="assets\teleportermod\blocktypes\toolmold.json" />
-    <None Include="assets\teleportermod\shapes\block\mold\mirror.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="src\TeleporterMod.cs" />
-    <Compile Include="src\Item\ItemMirror.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-
-    </PostBuildEvent>
-  </PropertyGroup>
+  
+  <Target Name="Copy" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(VINTAGE_STORY_DATA)/Mods" />
+    <Copy SourceFiles="$(TargetDir)/$(TargetName).pdb" DestinationFolder="$(VINTAGE_STORY_DATA)/Mods" />
+  </Target>
 </Project>

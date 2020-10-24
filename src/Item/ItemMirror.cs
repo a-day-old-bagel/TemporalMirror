@@ -81,7 +81,7 @@ public class ItemMirror : Item
             if (secondsUsed > 0.5)
             {
                 Vec3d pos =
-                   byEntity.Pos.XYZ.Add(0, byEntity.EyeHeight, 0)
+                   byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y, 0)
                     .Ahead(0.5, byEntity.Pos.Pitch, byEntity.Pos.Yaw);
                 ;
 
@@ -99,7 +99,7 @@ public class ItemMirror : Item
     }
 
     public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
-    { 
+    {
         sound?.Stop();
         if (secondsUsed >= secondsNeed)
         {
