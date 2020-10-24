@@ -1,19 +1,11 @@
 ﻿using System;
 using Vintagestory.API.Common;
-
+//[assembly: ModInfo("TemporalMirror")]
 public class TeleporterMod : ModSystem
 {
     public override void Start(ICoreAPI api)
     {
         base.Start(api);
-          
-        string[] items = {
-            "ItemMirror"
-        };
-
-        foreach (string e in items)
-        {
-            api.RegisterItemClass(e, Type.GetType(e));
-        }
+        api.RegisterItemClass("ItemMirror", Type.GetType("ItemMirror"));
     }
 }

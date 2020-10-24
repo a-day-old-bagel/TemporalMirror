@@ -6,7 +6,7 @@
   "description": "Add mirror for teleportation",
   "version": "1.2.2",
   "dependency": {
-    "game": "1.12.14"
+    "game": "1.13.4"
   },
-  "website": "https://www.vintagestory.at/forums/topic/2160-temporal-mirror/"
+  "website": "https://github.com/DArkHekRoMaNT/TemporalMirror"
 }
