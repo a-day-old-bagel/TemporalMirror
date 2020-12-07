@@ -1,11 +1,13 @@
-﻿using System;
-using Vintagestory.API.Common;
-//[assembly: ModInfo("TemporalMirror")]
-public class TeleporterMod : ModSystem
+﻿using Vintagestory.API.Common;
+
+namespace TeleporterMod
 {
-    public override void Start(ICoreAPI api)
+    public class TeleporterMod : ModSystem
     {
-        base.Start(api);
-        api.RegisterItemClass("ItemMirror", Type.GetType("ItemMirror"));
+        public override void Start(ICoreAPI api)
+        {
+            base.Start(api);
+            api.RegisterItemClass("ItemMirror", typeof(ItemMirror));
+        }
     }
 }
