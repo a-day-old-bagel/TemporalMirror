@@ -1,11 +1,11 @@
 ﻿{
-    ingredientPattern: "G,S",
-    ingredients: {
-        "S": { type: "item", code: "mirror-frame-*", name: "type" },
-        "G": { type: "item", code: "game:gear-temporal" }
-    },
-    width: 1,
-    height: 2,
-    shapeless: true,
-    output: { type: "item", code: "mirror-magic-{type}" }
+  "ingredientPattern": "G,S",
+  "ingredients": {
+    "S": { "type": "item", "code": "mirror-frame-*", "name": "type" },
+    "G": { "type": "item", "code": "game:gear-temporal" }
+  },
+  "width": 1,
+  "height": 2,
+  "shapeless": true,
+  "output": { "type": "item", "code": "mirror-magic-{type}" }
 }

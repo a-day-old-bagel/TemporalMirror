@@ -1,11 +1,11 @@
 ﻿{
-    ingredientPattern: "P,C",
-    ingredients: {
-        "P": { type: "item", code: "game:plank-*" },
-        "C": { type: "item", code: "game:chisel-*", isTool: true }
-    },
-    width: 1,
-    height: 2,
-    shapeless: true,
-    output: { type: "item", code: "mirror-frame-wood" }
+  "ingredientPattern": "P,C",
+  "ingredients": {
+    "P": { "type": "item", "code": "game:plank-*" },
+    "C": { "type": "item", "code": "game:chisel-*", "isTool": true }
+  },
+  "width": 1,
+  "height": 2,
+  "shapeless": true,
+  "output": { "type": "item", "code": "mirror-frame-wood" }
 }

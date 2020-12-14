@@ -21,8 +21,8 @@ namespace TeleporterMod
             new Vec3f(0.25f, 0.1f, 0.25f),          // add velocity
             0.2f,                                   // life length
             0.075f,                                 // gravity effect
-            0.25f,                                  // min size
-            0.25f,                                  // max size
+            0.1f,                                   // min size
+            0.1f,                                   // max size
             EnumParticleModel.Cube                  // model
         );
         protected ILoadedSound sound;
@@ -93,7 +93,7 @@ namespace TeleporterMod
                     particles.MinPos = pos.AddCopy(-0.05, -0.05, -0.05);
                     particles.AddPos.Set(0.1, 0.1, 0.1);
                     particles.MinSize = 0.01f;
-                    particles.SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.SINUS, 1);
+                    particles.SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.SINUS, 0.5f);
                     byEntity.World.SpawnParticles(particles);
                 }
             }
@@ -112,8 +112,8 @@ namespace TeleporterMod
                         slot.Itemstack.Attributes.GetInt("point.y") + 1,
                         slot.Itemstack.Attributes.GetInt("point.z")
                     );
-                    api.World.Logger.Notification("Teleport to " + HumanCoord(tpPos));
-                    SendMessage("Teleport to " + HumanCoord(tpPos), byEntity);
+                    api.World.Logger.Notification("Teleported to " + HumanCoord(tpPos));
+                    SendMessage("Teleported to " + HumanCoord(tpPos), byEntity);
                     byEntity.TeleportTo(tpPos.AddCopy(0, 1, 0));
 
                     // TODO: Need check teleportation complete
