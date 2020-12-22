@@ -18,7 +18,7 @@
       "onmoldrackTransform": { "rotation": { "z": 90 } },
       "requiredUnits": 100,
       "fillHeight": 1,
-      "drop": { "type": "item", "code": "mirror-{metal}-frame" }
+      "drop": { "type": "item", "code": "mirror-frame-{metal}" }
     }
   },
   "entityClassByType": {
