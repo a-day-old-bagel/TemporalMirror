@@ -10,7 +10,9 @@
       "blackbronze",
       "silver",
       "gold",
-      "iron"
+      "iron",
+      "meteoriciron",
+      "steel"
     ]
   },
   "pattern": [["____#####", "#####___#", "____#####"]],

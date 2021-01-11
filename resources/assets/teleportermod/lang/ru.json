@@ -37,5 +37,10 @@
 
   "heldhelp-savepoint": "Сохранить точку",
   "heldhelp-teleport": "Вернуться",
-  "heldhelp-teleport-to-player": "Телепортироваться к игроку"
+  "heldhelp-teleport-to-player": "Телепортироваться к игроку",
+
+  "Teleported to {0}": "Телепортирован в {0}",
+  "Saved point: {0}, {1}, {2}": "Сохраненная точка: {0}, {1}, {2}",
+  "Return point saved at {0}": "Точка возврата сохранена на {0}",
+  "Distance: {0} m": "Расстояние: {0} м"
 }

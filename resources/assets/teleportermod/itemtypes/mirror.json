@@ -38,16 +38,16 @@
   },
   "maxstacksize": 1,
   "durabilityByType": {
-    "*-wood": 1,
-    "*-copper": 2,
-    "*-tinbronze": 3,
-    "*-gold": 3,
-    "*-silver": 3,
-    "*-bismuthbronze": 3,
-    "*-blackbronze": 5,
-    "*-iron": 8,
-    "*-meteoriciron": 10,
-    "*-steel": 15
+    "*-wood": 1000,
+    "*-copper": 2000,
+    "*-tinbronze": 4000,
+    "*-gold": 4000,
+    "*-silver": 4000,
+    "*-bismuthbronze": 4000,
+    "*-blackbronze": 5000,
+    "*-iron": 8000,
+    "*-meteoriciron": 10000,
+    "*-steel": 15000
   },
   "attributes": {
     "handbook": {

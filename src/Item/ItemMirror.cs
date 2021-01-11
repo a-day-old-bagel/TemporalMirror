@@ -10,22 +10,25 @@ namespace TeleporterMod
 {
     public class ItemMirror : Item
     {
-        protected const int secondsNeed = 5;
-        protected SimpleParticleProperties particles = new SimpleParticleProperties(
-            1,                                      // min quantity
-            1,                                      // add quantity
-            ColorUtil.WhiteAhsl,                    // color
-            new Vec3d(),                            // min pos
-            new Vec3d(),                            // add pos
-            new Vec3f(-0.25f, 0.1f, -0.25f),        // min velocity
-            new Vec3f(0.25f, 0.1f, 0.25f),          // add velocity
-            0.2f,                                   // life length
-            0.075f,                                 // gravity effect
-            0.1f,                                   // min size
-            0.1f,                                   // max size
-            EnumParticleModel.Cube                  // model
+        SimpleParticleProperties particles = new SimpleParticleProperties(
+            minQuantity: 1,
+            maxQuantity: 1,
+            color: ColorUtil.WhiteAhsl,
+            minPos: new Vec3d(),
+            maxPos: new Vec3d(),
+            minVelocity: new Vec3f(-0.25f, 0.1f, -0.25f),
+            maxVelocity: new Vec3f(0.25f, 0.1f, 0.25f),
+            lifeLength: 0.2f,
+            gravityEffect: 0.075f,
+            minSize: 0.1f,
+            maxSize: 0.1f,
+            model: EnumParticleModel.Cube
         );
-        protected ILoadedSound sound;
+        ILoadedSound sound;
+
+        const int secondsNeed = 5;
+        bool teleported;
+        BlockPos beforeTpPos;
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
@@ -34,50 +37,51 @@ namespace TeleporterMod
                 base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
                 return;
             }
+
             if (slot.Itemstack.Item.Variant["type"] == "magic")
             {
+
                 if (blockSel != null && byEntity.Controls.Sneak)
                 {
-                    BlockPos pos = blockSel.Position.AddCopy(1, 0, 1);
-                    slot.Itemstack.Attributes.SetInt("point.x", pos.X);
-                    slot.Itemstack.Attributes.SetInt("point.y", pos.Y);
-                    slot.Itemstack.Attributes.SetInt("point.z", pos.Z);
+                    slot.Itemstack.Attributes.SetInt("x", blockSel.Position.X);
+                    slot.Itemstack.Attributes.SetInt("y", blockSel.Position.Y);
+                    slot.Itemstack.Attributes.SetInt("z", blockSel.Position.Z);
 
-                    SendMessage("Return point saved at " + HumanCoord(pos), byEntity);
+                    SendMessage(Lang.Get("Return point saved at {0}", MapPos(blockSel.Position)), byEntity);
                     handling = EnumHandHandling.Handled;
                     return;
                 }
-                if (!slot.Itemstack.Attributes.HasAttribute("point.x")) return;
-            }
 
-            if (byEntity.World is IClientWorldAccessor)
-            {
-                IClientWorldAccessor world = byEntity.World as IClientWorldAccessor;
-                sound = world.LoadSound(new SoundParams()
+                if (!slot.Itemstack.Attributes.HasAttribute("x")) return;
+
+                if (byEntity.World is IClientWorldAccessor world)
                 {
-                    Location = new AssetLocation("teleportermod:sounds/teleport.ogg"),
-                    ShouldLoop = false,
-                    Position = byEntity.Pos.XYZ.ToVec3f(),
-                    DisposeOnFinish = true,
-                    Volume = 1f,
-                    Pitch = 0.7f
-                });
-                sound?.Start();
-            }
+                    sound = world.LoadSound(new SoundParams()
+                    {
+                        Location = new AssetLocation("teleportermod:sounds/teleport.ogg"),
+                        ShouldLoop = false,
+                        Position = byEntity.Pos.XYZ.ToVec3f(),
+                        DisposeOnFinish = true,
+                        Volume = 1f,
+                        Pitch = 0.7f
+                    });
+                    sound?.Start();
+                }
 
-            handling = EnumHandHandling.PreventDefault;
+                teleported = false;
+                handling = EnumHandHandling.PreventDefault;
+            }
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
-            if (secondsUsed >= secondsNeed) return false;
-
             if (api.Side == EnumAppSide.Client)
             {
                 ModelTransform tf = new ModelTransform();
                 tf.EnsureDefaultValues();
 
-                tf.Translation.Set(-secondsUsed * 0.05f, secondsUsed * 0.025f, secondsUsed * 0.05f);
+                float trans = Math.Min(secondsUsed, secondsNeed);
+                tf.Translation.Set(-trans * 0.05f, trans * 0.025f, trans * 0.05f);
                 byEntity.Controls.UsingHeldItemTransformAfter = tf;
 
                 if (secondsUsed > 0.5)
@@ -97,35 +101,56 @@ namespace TeleporterMod
                     byEntity.World.SpawnParticles(particles);
                 }
             }
-            return true;
+
+            if (!teleported && secondsUsed > secondsNeed)
+            {
+                if (slot.Itemstack.Item.Variant["type"] == "magic")
+                {
+
+                    Vec3d tpPos = new Vec3d().Set(
+                        slot.Itemstack.Attributes.GetInt("x") + 0.5f,
+                        slot.Itemstack.Attributes.GetInt("y") + 1,
+                        slot.Itemstack.Attributes.GetInt("z") + 0.5f
+                    );
+
+                    beforeTpPos = byEntity.Pos.AsBlockPos;
+
+                    if ((int)beforeTpPos.DistanceTo(tpPos.AsBlockPos) >= slot.Itemstack.Collectible.Durability)
+                    {
+                        return false;
+                    }
+
+                    if (!byEntity.Teleporting)
+                    {
+                        byEntity.TeleportToDouble(tpPos.X, tpPos.Y, tpPos.Z, () => teleported = true);
+                        api.World.Logger.Notification("Teleported to {0}", tpPos);
+                        SendMessage(Lang.Get("Teleported to {0}", MapPos(tpPos.AsBlockPos)), byEntity);
+                    }
+                }
+            }
+
+            return !teleported;
+        }
+
+        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
+        {
+            bool flag = base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason);
+
+            if (flag)
+            {
+                sound?.Stop();
+            }
+
+            return flag;
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             sound?.Stop();
-            if (secondsUsed >= secondsNeed)
-            {
-                if (slot.Itemstack.Item.Variant["type"] == "magic")
-                {
-                    BlockPos tpPos = new BlockPos().Set(
-                        slot.Itemstack.Attributes.GetInt("point.x"),
-                        slot.Itemstack.Attributes.GetInt("point.y") + 1,
-                        slot.Itemstack.Attributes.GetInt("point.z")
-                    );
-                    api.World.Logger.Notification("Teleported to " + HumanCoord(tpPos));
-                    SendMessage("Teleported to " + HumanCoord(tpPos), byEntity);
-                    byEntity.TeleportTo(tpPos.AddCopy(0, 1, 0));
 
-                    // TODO: Need check teleportation complete
-                    if ((byEntity as EntityPlayer)?.Player.WorldData.CurrentGameMode != EnumGameMode.Creative)
-                    {
-                        slot.Itemstack.Collectible.DamageItem(byEntity.World, byEntity, slot);
-                    }
-                }
-                else
-                {
-                    //TODO: Wormhole, open gui and select player
-                }
+            if (teleported && (byEntity as EntityPlayer)?.Player.WorldData.CurrentGameMode != EnumGameMode.Creative)
+            {
+                slot.Itemstack.Collectible.DamageItem(byEntity.World, byEntity, slot, (int)beforeTpPos.DistanceTo(byEntity.Pos.AsBlockPos));
             }
         }
 
@@ -165,26 +190,27 @@ namespace TeleporterMod
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
-            if (inSlot.Itemstack.Attributes.HasAttribute("point.x"))
+            if (inSlot.Itemstack.Attributes.HasAttribute("x"))
             {
-                BlockPos tpPos = HumanCoord(new BlockPos().Set(
-                        inSlot.Itemstack.Attributes.GetInt("point.x"),
-                        inSlot.Itemstack.Attributes.GetInt("point.y") + 1,
-                        inSlot.Itemstack.Attributes.GetInt("point.z")
-                ));
-                dsc.AppendLine("Saved point: " + tpPos.X + ", " + tpPos.Y + ", " + tpPos.Z);
+                BlockPos tpPos = new BlockPos().Set(
+                        inSlot.Itemstack.Attributes.GetInt("x"),
+                        inSlot.Itemstack.Attributes.GetInt("y") + 1,
+                        inSlot.Itemstack.Attributes.GetInt("z")
+                );
+                BlockPos mapTpPos = MapPos(tpPos);
+                dsc.AppendLine(Lang.Get("Saved point: {0}, {1}, {2}", mapTpPos.X, mapTpPos.Y, mapTpPos.Z));
+                dsc.AppendLine(Lang.Get("Distance: {0} m", (int)(api as ICoreClientAPI)?.World?.Player?.Entity?.Pos.AsBlockPos.DistanceTo(tpPos)));
             }
         }
 
-        protected BlockPos HumanCoord(BlockPos trueCoord)
+        private BlockPos MapPos(BlockPos pos)
         {
-            int x = (int)(trueCoord.X - api.World.DefaultSpawnPosition.XYZ.Z);
-            int y = trueCoord.Y;
-            int z = (int)(trueCoord.Z - api.World.DefaultSpawnPosition.XYZ.Z);
-            return new BlockPos(x, y, z);
+            int x = pos.X - api.World.DefaultSpawnPosition.XYZInt.X;
+            int z = pos.Z - api.World.DefaultSpawnPosition.XYZInt.Z;
+            return new BlockPos(x, pos.Y + 1, z);
         }
 
-        protected void SendMessage(string msg, EntityAgent byEntity)
+        private void SendMessage(string msg, EntityAgent byEntity)
         {
             IPlayer byPlayer = api.World.PlayerByUid((byEntity as EntityPlayer).PlayerUID);
             if (api.Side == EnumAppSide.Server)
@@ -198,6 +224,5 @@ namespace TeleporterMod
                 //cp.ShowChatNotification(msg);
             }
         }
-
     }
 }
