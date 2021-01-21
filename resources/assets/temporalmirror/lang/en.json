@@ -1,0 +1,48 @@
+{
+  "item-mirror-magic-wood": "Temporal mirror (Wood)",
+  "item-mirror-magic-copper": "Temporal mirror (Copper)",
+  "item-mirror-magic-tinbronze": "Temporal mirror (Tin bronze)",
+  "item-mirror-magic-bismuthbronze": "Temporal mirror (Bismuth bronze)",
+  "item-mirror-magic-blackbronze": "Temporal mirror (Black bronze)",
+  "item-mirror-magic-silver": "Temporal mirror (Silver)",
+  "item-mirror-magic-gold": "Temporal mirror (Gold)",
+  "item-mirror-magic-iron": "Temporal mirror (Iron)",
+  "item-mirror-magic-meteoriciron": "Temporal mirror (Meteoric iron)",
+  "item-mirror-magic-steel": "Temporal mirror (Steel)",
+
+  "item-mirror-wormhole-wood": "[WIP] Wormhole mirror (Wood)",
+  "item-mirror-wormhole-copper": "[WIP] Wormhole mirror (Copper)",
+  "item-mirror-wormhole-tinbronze": "[WIP] Wormhole mirror (Tin bronze)",
+  "item-mirror-wormhole-bismuthbronze": "[WIP] Wormhole mirror (Bismuth bronze)",
+  "item-mirror-wormhole-blackbronze": "[WIP] Wormhole mirror (Black bronze)",
+  "item-mirror-wormhole-gold": "[WIP] Wormhole mirror (Gold)",
+  "item-mirror-wormhole-silver": "[WIP] Wormhole mirror (Silver)",
+  "item-mirror-wormhole-iron": "[WIP] Wormhole mirror (Iron)",
+  "item-mirror-wormhole-meteoriciron": "[WIP] Wormhole mirror (Meteoric iron)",
+  "item-mirror-wormhole-steel": "[WIP] Wormhole mirror (Steel)",
+
+  "item-mirror-frame-wood": "Mirror frame (Wood)",
+  "item-mirror-frame-copper": "Mirror frame (Copper)",
+  "item-mirror-frame-tinbronze": "Mirror frame (Tin bronze)",
+  "item-mirror-frame-bismuthbronze": "Mirror frame (Bismuth bronze)",
+  "item-mirror-frame-blackbronze": "Mirror frame (Black bronze)",
+  "item-mirror-frame-gold": "Mirror frame (Gold)",
+  "item-mirror-frame-silver": "Mirror frame (Silver)",
+  "item-mirror-frame-iron": "Mirror frame (Iron)",
+  "item-mirror-frame-meteoriciron": "Mirror frame (Meteoric iron)",
+  "item-mirror-frame-steel": "Mirror frame (Steel)",
+
+  "block-toolmold-raw-mirror": "Raw mirror mold",
+  "block-toolmold-burned-mirror": "Mirror mold",
+
+  "heldhelp-savepoint": "Save point",
+  "heldhelp-teleport": "Return",
+  "heldhelp-teleport-to-player": "Teleport to player",
+
+  "game:tabname-teleportermod": "Temporal mirror",
+
+  "Teleported to {0}": "Teleported to {0}",
+  "Saved point: {0}, {1}, {2}": "Saved point: {0}, {1}, {2}",
+  "Return point saved at {0}": "Return point saved at {0}",
+  "Distance: {0} m": "Distance: {0} m"
+}

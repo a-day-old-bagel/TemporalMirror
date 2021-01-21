@@ -1,10 +1,10 @@
 {
   "type": "code",
-  "modid": "teleportermod",
+  "modid": "temporalmirror",
   "name": "Temporal Mirror",
   "author": "DArkHekRoMaNT",
-  "description": "Add mirror for teleportation",
-  "version": "1.4.0",
+  "description": "Adds teleportation mirrors",
+  "version": "1.4.1",
   "dependency": {
     "game": "1.14.0"
   },

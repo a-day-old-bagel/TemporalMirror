@@ -1,13 +1,15 @@
 ﻿using Vintagestory.API.Common;
 
-namespace TeleporterMod
+namespace TemporalMirror
 {
-    public class TeleporterMod : ModSystem
+    public class Core : ModSystem
     {
         public override void Start(ICoreAPI api)
         {
             base.Start(api);
             api.RegisterItemClass("ItemMirror", typeof(ItemMirror));
+
+            Config.Current = api.LoadOrCreateConfig<Config>(Constants.MOD_ID);
         }
     }
 }
