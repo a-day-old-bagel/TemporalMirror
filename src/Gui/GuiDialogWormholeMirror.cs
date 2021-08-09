@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using SharedUtils;
+using SharedUtils.Extensions;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -14,9 +16,9 @@ namespace TemporalMirror
         public override bool UnregisterOnClose => true;
 
         public GuiDialogWormholeMirror(ICoreClientAPI capi)
-            : base(Lang.Get(Constants.MOD_ID + ":dlg-wormhole"), capi)
+            : base(Lang.Get(ConstantsCore.ModId + ":dlg-wormhole"), capi)
         {
-            IsDuplicate = capi.OpenedGuis.FirstOrDefault((object dlg) => (dlg as GuiDialogGeneric)?.DialogTitle == Constants.MOD_ID + ":dlg-wormhole") != null;
+            IsDuplicate = capi.OpenedGuis.FirstOrDefault((object dlg) => (dlg as GuiDialogGeneric)?.DialogTitle == ConstantsCore.ModId + ":dlg-wormhole") != null;
         }
 
         protected void CloseIconPressed() => TryClose();

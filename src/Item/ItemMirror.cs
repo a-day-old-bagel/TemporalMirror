@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using SharedUtils;
+using SharedUtils.Extensions;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -56,7 +58,7 @@ namespace TemporalMirror
             {
                 sound = world.LoadSound(new SoundParams()
                 {
-                    Location = new AssetLocation(Constants.MOD_ID, "sounds/teleport.ogg"),
+                    Location = new AssetLocation(ConstantsCore.ModId, "sounds/teleport.ogg"),
                     ShouldLoop = false,
                     Position = byEntity.Pos.XYZ.ToVec3f(),
                     DisposeOnFinish = true,
@@ -68,7 +70,6 @@ namespace TemporalMirror
 
             teleported = false;
             handling = EnumHandHandling.PreventDefault;
-
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
@@ -187,12 +188,12 @@ namespace TemporalMirror
                 {
                 new WorldInteraction()
                 {
-                    ActionLangCode = Constants.MOD_ID + ":heldhelp-teleport",
+                    ActionLangCode = ConstantsCore.ModId + ":heldhelp-teleport",
                     MouseButton = EnumMouseButton.Right
                 },
                 new WorldInteraction()
                 {
-                    ActionLangCode = Constants.MOD_ID + ":heldhelp-savepoint",
+                    ActionLangCode = ConstantsCore.ModId + ":heldhelp-savepoint",
                     MouseButton = EnumMouseButton.Right,
                     HotKeyCode = "sneak"
                 }
@@ -204,7 +205,7 @@ namespace TemporalMirror
                 {
                 new WorldInteraction()
                 {
-                    ActionLangCode = Constants.MOD_ID + ":heldhelp-teleport-to-player",
+                    ActionLangCode = ConstantsCore.ModId + ":heldhelp-teleport-to-player",
                     MouseButton = EnumMouseButton.Right
                 },
                 };

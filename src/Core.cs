@@ -1,4 +1,6 @@
-﻿using Vintagestory.API.Common;
+﻿using SharedUtils;
+using SharedUtils.Extensions;
+using Vintagestory.API.Common;
 
 namespace TemporalMirror
 {
@@ -9,7 +11,7 @@ namespace TemporalMirror
             base.Start(api);
             api.RegisterItemClass("ItemMirror", typeof(ItemMirror));
 
-            Config.Current = api.LoadOrCreateConfig<Config>(Constants.MOD_ID);
+            Config.Current = api.LoadOrCreateConfig<Config>(ConstantsCore.ModId);
         }
     }
 }
