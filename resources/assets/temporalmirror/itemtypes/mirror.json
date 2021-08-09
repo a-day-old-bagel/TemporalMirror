@@ -20,10 +20,12 @@
     }
   ],
   "texturesByType": {
+    "*-frame-wood": { "all": { "base": "game:item/tool/material/{material}" } },
     "*-wood": {
       "glass": { "base": "item/mirror/{type}" },
       "frame": { "base": "game:item/tool/material/{material}" }
     },
+    "*-frame-*": { "all": { "base": "game:block/metal/ingot/{material}" } },
     "*": {
       "glass": { "base": "item/mirror/{type}" },
       "frame": { "base": "game:block/metal/ingot/{material}" }
