@@ -2,11 +2,11 @@
   "type": "code",
   "modid": "temporalmirror",
   "name": "Temporal Mirror",
-  "author": "DArkHekRoMaNT",
+  "authors": ["DArkHekRoMaNT"],
   "description": "Adds teleportation mirrors",
-  "version": "1.5.1",
-  "dependency": {
-    "game": "1.15.0"
+  "version": "1.6.0",
+  "dependencies": {
+    "game": "1.16.0-pre.8"
   },
   "website": "https://github.com/DArkHekRoMaNT/TemporalMirror"
 }
