@@ -5,12 +5,21 @@
     "toolmold-burned-*": "BlockToolMold"
   },
   "behaviorsByType": {
-    "*-raw-*": [{ "name": "UnstableFalling" }, { "name": "RightClickPickup" }],
-    "*": [{ "name": "UnstableFalling" }]
+    "*-raw-*": [
+      { "name": "UnstableFalling" },
+      { "name": "RightClickPickup" }
+    ],
+    "*": [ { "name": "UnstableFalling" } ]
   },
   "variantgroups": [
-    { "code": "materialtype", "states": ["raw", "burned"] },
-    { "code": "tooltype", "states": ["mirror"] }
+    {
+      "code": "materialtype",
+      "states": [ "raw", "burned" ]
+    },
+    {
+      "code": "tooltype",
+      "states": [ "mirror" ]
+    }
   ],
   "attributesByType": {
     "toolmold-burned-mirror": {
@@ -18,7 +27,10 @@
       "onmoldrackTransform": { "rotation": { "z": 90 } },
       "requiredUnits": 100,
       "fillHeight": 1,
-      "drop": { "type": "item", "code": "mirror-frame-{metal}" }
+      "drop": {
+        "type": "item",
+        "code": "mirror-frame-{metal}"
+      }
     }
   },
   "entityClassByType": {
@@ -30,15 +42,18 @@
       "meltingDuration": 45,
       "smeltedRatio": 1,
       "smeltingType": "bake",
-      "smeltedStack": { "type": "block", "code": "toolmold-burned-{tooltype}" },
+      "smeltedStack": {
+        "type": "block",
+        "code": "toolmold-burned-{tooltype}"
+      },
       "requiresContainer": false
     }
   },
   "blockmaterial": "Ceramic",
   "creativeinventory": {
-    "general": ["*"],
-    "construction": ["*"],
-    "teleportermod": ["*"]
+    "general": [ "*" ],
+    "construction": [ "*" ],
+    "teleportermod": [ "*" ]
   },
   "replaceable": 700,
   "resistance": 1.5,
@@ -51,12 +66,29 @@
       "other": { "base": "game:block/clay/ceramic" }
     }
   },
-  "shape": { "base": "block/mold/{tooltype}", "rotateY": 90 },
+  "shape": {
+    "base": "block/mold/{tooltype}",
+    "rotateY": 90
+  },
   "sounds": {
     "walk": "game:walk/stone"
   },
-  "collisionbox": { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 0.1875, "z2": 1 },
-  "selectionbox": { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 0.1875, "z2": 1 },
+  "collisionbox": {
+    "x1": 0,
+    "y1": 0,
+    "z1": 0,
+    "x2": 1,
+    "y2": 0.1875,
+    "z2": 1
+  },
+  "selectionbox": {
+    "x1": 0,
+    "y1": 0,
+    "z1": 0,
+    "x2": 1,
+    "y2": 0.1875,
+    "z2": 1
+  },
   "sideopaque": {
     "all": false
   },
@@ -64,14 +96,34 @@
     "all": false
   },
   "guiTransform": {
-    "translation": { "x": 0, "y": 3, "z": 0 },
-    "origin": { "x": 0.5, "y": 0.0625, "z": 0.5 },
+    "translation": {
+      "x": 0,
+      "y": 3,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.0625,
+      "z": 0.5
+    },
     "scale": 1.33
   },
   "groundTransform": {
-    "translation": { "x": 0, "y": 0, "z": 0 },
-    "rotation": { "x": 0, "y": -45, "z": 0 },
-    "origin": { "x": 0.5, "y": 0, "z": 0.5 },
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": -45,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
     "scale": 2.2
   }
 }
