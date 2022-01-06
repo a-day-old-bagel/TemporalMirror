@@ -39,7 +39,7 @@
   "heldhelp-teleport": "Return",
   "heldhelp-teleport-to-player": "Teleport to player",
 
-  "game:tabname-teleportermod": "Temporal Mirror",
+  "game:tabname-temporalmirror": "Temporal Mirror",
 
   "Teleported to {0}": "Teleported to {0}",
   "Saved point: {0}, {1}, {2}": "Saved point: {0}, {1}, {2}",

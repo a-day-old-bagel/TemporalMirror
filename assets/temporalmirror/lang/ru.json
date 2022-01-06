@@ -9,6 +9,7 @@
   "item-mirror-magic-iron": "Темпоральное зеркало (железо)",
   "item-mirror-magic-meteoriciron": "Темпоральное зеркало (метеоритное железо)",
   "item-mirror-magic-steel": "Темпоральное зеркало (сталь)",
+
   "item-mirror-wormhole-wood": "[WIP] Зеркало-червоточина (дерево)",
   "item-mirror-wormhole-copper": "[WIP] Зеркало-червоточина (медь)",
   "item-mirror-wormhole-tinbronze": "[WIP] Зеркало-червоточина (оловянная бронза)",
@@ -19,6 +20,7 @@
   "item-mirror-wormhole-iron": "[WIP] Зеркало-червоточина (железо)",
   "item-mirror-wormhole-meteoriciron": "[WIP] Зеркало-червоточина (метеоритное железо)",
   "item-mirror-wormhole-steel": "[WIP] Зеркало-червоточина (сталь)",
+
   "item-mirror-frame-wood": "Рамка для зеркала (дерево)",
   "item-mirror-frame-copper": "Рамка для зеркала (медь)",
   "item-mirror-frame-tinbronze": "Рамка для зеркала (оловянная бронза)",
@@ -29,12 +31,16 @@
   "item-mirror-frame-iron": "Рамка для зеркала (железо)",
   "item-mirror-frame-meteoriciron": "Рамка для зеркала (метеоритное железо)",
   "item-mirror-frame-steel": "Рамка для зеркала (сталь)",
+
   "block-toolmold-raw-mirror": "Сырая форма для зеркала",
   "block-toolmold-burned-mirror": "Форма для зеркала",
+
   "heldhelp-savepoint": "Сохранить точку",
   "heldhelp-teleport": "Вернуться",
   "heldhelp-teleport-to-player": "Телепортироваться к игроку",
+
   "game:tabname-teleportermod": "Temporal Mirror",
+
   "Teleported to {0}": "Телепортирован к {0}",
   "Saved point: {0}, {1}, {2}": "Сохраненная точка: {0}, {1}, {2}",
   "Return point saved at {0}": "Точка возврата сохранена в {0}",
