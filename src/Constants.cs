@@ -2,6 +2,6 @@ namespace TemporalMirror
 {
     public static class Constants
     {
-        public const int SECONDS_FOR_OPEN = 5;
+        public const int USE_SECONDS = 5;
     }
 }

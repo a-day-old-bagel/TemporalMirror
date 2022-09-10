@@ -1,44 +1,43 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using SharedUtils;
 using SharedUtils.Extensions;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Server;
 
 namespace TemporalMirror
 {
     public class ItemMirror : Item
     {
-        SimpleParticleProperties particles = new SimpleParticleProperties(
-            minQuantity: 1,
-            maxQuantity: 1,
-            color: ColorUtil.WhiteAhsl,
-            minPos: new Vec3d(),
-            maxPos: new Vec3d(),
-            minVelocity: new Vec3f(-0.25f, 0.1f, -0.25f),
-            maxVelocity: new Vec3f(0.25f, 0.1f, 0.25f),
-            lifeLength: 0.2f,
-            gravityEffect: 0.075f,
-            minSize: 0.1f,
-            maxSize: 0.1f,
-            model: EnumParticleModel.Cube
-        );
-        ILoadedSound sound;
+        readonly SimpleParticleProperties particles = new SimpleParticleProperties()
+        {
+            MinQuantity = 1,
+            MinPos = new Vec3d(),
+            AddPos = new Vec3d(0.1, 0.1, 0.1),
+            MinVelocity = new Vec3f(-0.25f, 0.1f, -0.25f),
+            AddVelocity = new Vec3f(0.5f, 0.2f, 0.5f),
+            LifeLength = 0.2f,
+            GravityEffect = 0.9f,
+            MinSize = 0.1f,
+            MaxSize = 0.1f,
+            ParticleModel = EnumParticleModel.Cube
+        };
 
-        bool teleported;
-        bool isSavePoint;
-        BlockPos beforeTpPos;
+        ILoadedSound sound;
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
-            if (slot.Itemstack.Item.Variant["type"] == "frame") return;
+            string mirrorType = slot.Itemstack.Item.Variant["type"];
 
-            if (slot.Itemstack.Item.Variant["type"] == "magic")
+            if (mirrorType == "frame") return;
+
+            if (mirrorType == "magic")
             {
-                isSavePoint = false;
+                slot.Itemstack.Attributes.SetBool("savePointMode", false);
 
                 if (blockSel != null && byEntity.Controls.Sneak)
                 {
@@ -47,115 +46,144 @@ namespace TemporalMirror
                     slot.Itemstack.Attributes.SetInt("z", blockSel.Position.Z);
 
                     handling = EnumHandHandling.Handled;
-                    isSavePoint = true;
+                    slot.Itemstack.Attributes.SetBool("savePointMode", true);
                     return;
                 }
 
-                if (!slot.Itemstack.Attributes.HasAttribute("x")) return;
-            }
-
-            if (byEntity.World is IClientWorldAccessor world)
-            {
-                sound = world.LoadSound(new SoundParams()
+                if (slot.Itemstack.Collectible.Durability <= 1 || !slot.Itemstack.Attributes.HasAttribute("x"))
                 {
-                    Location = new AssetLocation(ConstantsCore.ModId, "sounds/teleport.ogg"),
-                    ShouldLoop = false,
-                    Position = byEntity.Pos.XYZ.ToVec3f(),
-                    DisposeOnFinish = true,
-                    Volume = 1f,
-                    Pitch = 0.7f
-                });
-                sound?.Start();
-            }
+                    return;
+                }
 
-            teleported = false;
-            handling = EnumHandHandling.PreventDefault;
+                if (byEntity.World is IClientWorldAccessor world)
+                {
+                    sound = world.LoadSound(new SoundParams()
+                    {
+                        Location = new AssetLocation(ConstantsCore.ModId, "sounds/teleport.ogg"),
+                        ShouldLoop = false,
+                        Position = byEntity.Pos.XYZ.ToVec3f(),
+                        DisposeOnFinish = true,
+                        Volume = 1f,
+                        Pitch = 0.7f
+                    });
+                    sound?.Start();
+                }
+
+                handling = EnumHandHandling.PreventDefault;
+            }
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
+            if (slot.Itemstack.Attributes.GetBool("savePointMode", false)) return false;
+
             if (api.Side == EnumAppSide.Client)
             {
                 ModelTransform tf = new ModelTransform();
                 tf.EnsureDefaultValues();
 
-                float trans = Math.Min(secondsUsed, Constants.SECONDS_FOR_OPEN);
+                float trans = Math.Min(secondsUsed, Constants.USE_SECONDS);
                 tf.Translation.Set(-trans * 0.05f, trans * 0.025f, trans * 0.05f);
                 byEntity.Controls.UsingHeldItemTransformAfter = tf;
 
                 if (secondsUsed > 0.5)
                 {
-                    Vec3d pos =
-                       byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y, 0)
+                    Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y, 0)
                         .Ahead(0.5, byEntity.Pos.Pitch, byEntity.Pos.Yaw);
-                    ;
 
-                    Random rand = new Random();
                     particles.Color = GetRandomColor(api as ICoreClientAPI, slot.Itemstack);
-
-                    particles.MinPos = pos.AddCopy(-0.05, -0.05, -0.05);
-                    particles.AddPos.Set(0.1, 0.1, 0.1);
-                    particles.MinSize = 0.01f;
+                    particles.MinPos.Set(pos).Add(-0.05, -0.05, -0.05);
                     particles.SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.SINUS, 0.5f);
+
                     byEntity.World.SpawnParticles(particles);
                 }
             }
 
-            if (!teleported && secondsUsed > Constants.SECONDS_FOR_OPEN)
+            if (secondsUsed > Constants.USE_SECONDS)
             {
-                beforeTpPos = byEntity.Pos.AsBlockPos;
-
                 if (slot.Itemstack.Item.Variant["type"] == "magic")
                 {
-                    Vec3d tpPos = new Vec3d(
-                        slot.Itemstack.Attributes.GetInt("x") + 0.5f,
-                        slot.Itemstack.Attributes.GetInt("y") + 1,
-                        slot.Itemstack.Attributes.GetInt("z") + 0.5f
-                    );
+                    slot.Itemstack.Attributes.SetVec3i("beforeTpPos", byEntity.Pos.XYZInt.AddCopy(0, 0, 0));
 
-
-                    if ((int)beforeTpPos.DistanceTo(tpPos.AsBlockPos) >= slot.Itemstack.Collectible.Durability)
+                    if (api.Side == EnumAppSide.Server && !byEntity.Teleporting && byEntity is EntityPlayer entityPlayer)
                     {
+                        TeleportToPoint(slot, entityPlayer);
                         return false;
                     }
-
-                    if (!byEntity.Teleporting)
-                    {
-                        byEntity.TeleportToDouble(tpPos.X, tpPos.Y, tpPos.Z, () => teleported = true);
-                        api.World.Logger.ModNotification("Teleported to {0}", tpPos);
-                    }
                 }
+
                 else if (slot.Itemstack.Item.Variant["type"] == "wormhole")
                 {
-                    string playerUID = slot.Itemstack.Attributes.GetString("playerUID") ?? "";
-                    IPlayer toPlayer = api.World.PlayerByUid(playerUID);
-
-                    if (toPlayer?.Entity == null || !api.World.AllOnlinePlayers.Contains(toPlayer))
+                    if (api.Side == EnumAppSide.Client)
                     {
-                        if (api.Side == EnumAppSide.Client)
-                        {
-                            GuiDialogWormholeMirror dlg = new GuiDialogWormholeMirror(api as ICoreClientAPI);
-                            dlg.TryOpen();
-                        }
-                    }
-                    else
-                    {
-                        if ((int)beforeTpPos.DistanceTo(toPlayer.Entity.Pos.AsBlockPos) >= slot.Itemstack.Collectible.Durability)
-                        {
-                            return false;
-                        }
-
-                        if (!byEntity.Teleporting)
-                        {
-                            byEntity.TeleportTo(toPlayer.Entity.Pos, () => teleported = true);
-                            api.World.Logger.ModNotification("Teleported to {0} at {1}", toPlayer.PlayerName, toPlayer.Entity.Pos);
-                            byEntity?.WatchedAttributes?.SetString("playerUID", null);
-                        }
+                        GuiDialogWormholeMirror dlg = new GuiDialogWormholeMirror(api as ICoreClientAPI);
+                        dlg.TryOpen();
                     }
                 }
             }
 
-            return !teleported;
+            return true;
+        }
+
+        private void TeleportToPoint(ItemSlot slot, EntityPlayer entityPlayer)
+        {
+            Vec3i currentPoint = entityPlayer.Pos.XYZInt;
+            Vec3i endPoint = new Vec3i(
+                    slot.Itemstack.Attributes.GetInt("x"),
+                    slot.Itemstack.Attributes.GetInt("y"),
+                    slot.Itemstack.Attributes.GetInt("z"));
+
+            int maxDistance = slot.Itemstack.Collectible.Durability - 1;
+            int dist = (int)currentPoint.DistanceTo(endPoint);
+            bool toEnd = (dist <= maxDistance);
+
+            if (!toEnd)
+            {
+                int nX = currentPoint.X - endPoint.X;
+                int nZ = currentPoint.Z - endPoint.Z;
+                int k = maxDistance / dist;
+
+                endPoint = new Vec3i(
+                    currentPoint.X + nX / k,
+                    api.World.BlockAccessor.MapSizeY,
+                    currentPoint.Z + nZ / k
+                );
+            }
+
+            var sapi = api as ICoreServerAPI;
+            int chunkSize = sapi.WorldManager.ChunkSize;
+
+            entityPlayer.TeleportToDouble(endPoint.X + 0.5, endPoint.Y + 1, endPoint.Z + 0.5);
+            sapi.WorldManager.LoadChunkColumnPriority(endPoint.X / chunkSize, endPoint.Z / chunkSize, new ChunkLoadOptions()
+            {
+                OnLoaded = () =>
+                {
+                    if (!toEnd)
+                    {
+                        endPoint.Y = sapi.WorldManager.GetSurfacePosY(endPoint.X, endPoint.Z) ?? endPoint.Y;
+                    }
+
+                    string playerName = entityPlayer.Player.PlayerName;
+                    api.World.Logger.ModNotification("Teleporting {0} to {1}", playerName, endPoint);
+
+                    entityPlayer.TeleportToDouble(endPoint.X + 0.5, endPoint.Y + 1, endPoint.Z + 0.5, () =>
+                    {
+                        api.World.Logger.ModNotification("Teleported {0} to {1}", playerName, endPoint);
+
+                        if (entityPlayer.Player.WorldData.CurrentGameMode != EnumGameMode.Creative || true)
+                        {
+                            bool savePointMode = slot.Itemstack.Attributes.GetBool("savePointMode", false);
+                            Vec3i beforeTpPos = slot.Itemstack.Attributes.GetVec3i("beforeTpPos");
+
+                            if (!savePointMode && beforeTpPos != null)
+                            {
+                                int cost = (int)beforeTpPos.DistanceTo(entityPlayer.Pos.XYZInt);
+                                slot.Itemstack.Collectible.DamageItem(entityPlayer.World, entityPlayer, slot, cost);
+                            }
+                        }
+                    });
+                }
+            });
         }
 
         public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
@@ -174,10 +202,7 @@ namespace TemporalMirror
         {
             sound?.Stop();
 
-            if (!isSavePoint && teleported && (byEntity as EntityPlayer)?.Player.WorldData.CurrentGameMode != EnumGameMode.Creative)
-            {
-                slot.Itemstack.Collectible.DamageItem(byEntity.World, byEntity, slot, (int)beforeTpPos.DistanceTo(byEntity.Pos.AsBlockPos));
-            }
+            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
         }
 
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
