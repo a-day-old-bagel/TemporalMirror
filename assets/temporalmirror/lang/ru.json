@@ -32,8 +32,8 @@
   "item-mirror-frame-meteoriciron": "Рамка для зеркала (метеоритное железо)",
   "item-mirror-frame-steel": "Рамка для зеркала (сталь)",
 
-  "block-toolmold-raw-mirror": "Сырая форма для зеркала",
-  "block-toolmold-burned-mirror": "Форма для зеркала",
+  "game:block-toolmold-raw-temporalmirror_mirror": "Сырая форма для зеркала",
+  "game:block-toolmold-burned-temporalmirror_mirror": "Форма для зеркала",
 
   "heldhelp-savepoint": "Сохранить точку",
   "heldhelp-teleport": "Вернуться",

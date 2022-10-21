@@ -32,8 +32,8 @@
   "item-mirror-frame-meteoriciron": "Mirror frame (Meteoric iron)",
   "item-mirror-frame-steel": "Mirror frame (Steel)",
 
-  "block-toolmold-raw-mirror": "Raw mirror mold",
-  "block-toolmold-burned-mirror": "Mirror mold",
+  "game:block-toolmold-raw-temporalmirror_mirror": "Raw mirror mold",
+  "game:block-toolmold-burned-temporalmirror_mirror": "Mirror mold",
 
   "heldhelp-savepoint": "Save point",
   "heldhelp-teleport": "Return",

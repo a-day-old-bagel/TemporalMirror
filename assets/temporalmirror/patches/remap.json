@@ -1,0 +1,11 @@
+[
+  {
+    "file": "game:config/remaps.json",
+    "op": "add",
+    "path": "/temporalmirror:vanilla-toolmold",
+    "value": [
+      "/bir remapq game:toolmold-raw-temporalmirror_mirror temporalmirror:toolmold-raw-mirror force",
+      "/bir remapq game:toolmold-burned-temporalmirror_mirror temporalmirror:toolmold-burned-mirror force"
+    ]
+  }
+]
