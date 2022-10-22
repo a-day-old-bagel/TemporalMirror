@@ -15,7 +15,13 @@
       "steel"
     ]
   },
-  "pattern": [["____#####", "#####___#", "____#####"]],
+  "pattern": [
+    [
+      "____#####",
+      "#####___#",
+      "____#####"
+    ]
+  ],
   "name": "Mirror Frame",
   "output": { "type": "item", "code": "mirror-frame-{metal}" }
 }

@@ -40,5 +40,5 @@
     ]
   ],
   "name": "Mirror Mold",
-  "output": { "type": "block", "code": "toolmold-raw-mirror" }
+  "output": { "type": "block", "code": "game:toolmold-raw-temporalmirror_mirror" }
 }
