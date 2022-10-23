@@ -25,11 +25,11 @@
   "texturesByType": {
     "*-frame-wood": {
       "glass": { "base": "game:block/transparent" },
-      "frame": { "base": "game:item/tool/material/wood" }
+      "frame": { "base": "game:item/tool/material/handle" }
     },
     "*-wood": {
       "glass": { "base": "item/mirror/{type}" },
-      "frame": { "base": "game:item/tool/material/wood" }
+      "frame": { "base": "game:item/tool/material/handle" }
     },
     "*-frame-*": {
       "glass": { "base": "game:block/transparent" },
@@ -52,20 +52,31 @@
   },
   "maxstacksize": 1,
   "durabilityByType": {
-    "*-wood": 1000,
-    "*-copper": 2000,
-    "*-tinbronze": 4000,
-    "*-gold": 4000,
-    "*-silver": 4000,
-    "*-bismuthbronze": 4000,
-    "*-blackbronze": 5000,
-    "*-iron": 8000,
-    "*-meteoriciron": 10000,
-    "*-steel": 15000
+    "*-magic-wood": 1000,
+    "*-magic-copper": 2000,
+    "*-magic-tinbronze": 4000,
+    "*-magic-gold": 4000,
+    "*-magic-silver": 4000,
+    "*-magic-bismuthbronze": 4000,
+    "*-magic-blackbronze": 5000,
+    "*-magic-iron": 8000,
+    "*-magic-meteoriciron": 10000,
+    "*-magic-steel": 15000,
+
+    "*-wormhole-wood": 1,
+    "*-wormhole-copper": 2,
+    "*-wormhole-tinbronze": 4,
+    "*-wormhole-gold": 4,
+    "*-wormhole-silver": 4,
+    "*-wormhole-bismuthbronze": 4,
+    "*-wormhole-blackbronze": 5,
+    "*-wormhole-iron": 8,
+    "*-wormhole-meteoriciron": 10,
+    "*-wormhole-steel": 15
   },
   "attributes": {
     "handbook": {
-      "groupBy": [ "mirror-*" ]
+      "groupBy": [ "mirror-{type}-*" ]
     },
     "rackable": true,
     "toolrackTransform": {

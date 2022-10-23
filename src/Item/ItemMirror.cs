@@ -1,7 +1,6 @@
 using SharedUtils;
 using SharedUtils.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -81,6 +80,26 @@ namespace TemporalMirror
                     handling = EnumHandHandling.PreventDefault;
                     return;
                 }
+            }
+
+            if (IsWormhole)
+            {
+                if (byEntity.World is IClientWorldAccessor world)
+                {
+                    _sound = world.LoadSound(new SoundParams()
+                    {
+                        Location = new AssetLocation(ConstantsCore.ModId, "sounds/teleport.ogg"),
+                        ShouldLoop = false,
+                        Position = byEntity.Pos.XYZ.ToVec3f(),
+                        DisposeOnFinish = true,
+                        Volume = 1f,
+                        Pitch = 0.7f
+                    });
+                    _sound?.Start();
+                }
+
+                handling = EnumHandHandling.PreventDefault;
+                return;
             }
 
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
@@ -280,16 +299,19 @@ namespace TemporalMirror
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
-            UpdateToNewPos(inSlot.Itemstack);
-
-            Vec3i targetPos = inSlot.Itemstack.Attributes.GetVec3i("targetPos", null);
-            Vec3i playerPos = (world as IClientWorldAccessor)?.Player?.Entity?.Pos.XYZInt;
-
-            if (targetPos != null && playerPos != null)
+            if (IsMagic)
             {
-                Vec3i mapPos = ToVisiblePos(targetPos, world);
-                dsc.AppendLine(Lang.Get("Saved point: {0}, {1}, {2}", mapPos.X, mapPos.Y, mapPos.Z));
-                dsc.AppendLine(Lang.Get("Distance: {0} m", (int)playerPos.DistanceTo(targetPos)));
+                UpdateToNewPos(inSlot.Itemstack);
+
+                Vec3i targetPos = inSlot.Itemstack.Attributes.GetVec3i("targetPos", null);
+                Vec3i playerPos = (world as IClientWorldAccessor)?.Player?.Entity?.Pos.XYZInt;
+
+                if (targetPos != null && playerPos != null)
+                {
+                    Vec3i mapPos = ToVisiblePos(targetPos, world);
+                    dsc.AppendLine(Lang.Get("Saved point: {0}, {1}, {2}", mapPos.X, mapPos.Y, mapPos.Z));
+                    dsc.AppendLine(Lang.Get("Distance: {0} m", (int)playerPos.DistanceTo(targetPos)));
+                }
             }
         }
 

@@ -1,7 +1,7 @@
-using System;
-using System.Linq;
 using SharedUtils;
 using SharedUtils.Extensions;
+using System;
+using System.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -16,12 +16,11 @@ namespace TemporalMirror
         public override bool UnregisterOnClose => true;
 
         public GuiDialogWormholeMirror(ICoreClientAPI capi)
-            : base(Lang.Get(ConstantsCore.ModId + ":dlg-wormhole"), capi)
+            : base(Lang.Get(ConstantsCore.ModId + ":dlg-wormhole-title"), capi)
         {
-            IsDuplicate = capi.OpenedGuis.FirstOrDefault((object dlg) => (dlg as GuiDialogGeneric)?.DialogTitle == ConstantsCore.ModId + ":dlg-wormhole") != null;
+            IsDuplicate = capi.OpenedGuis.FirstOrDefault((object dlg)
+                => (dlg as GuiDialogGeneric)?.DialogTitle == DialogTitle) != null;
         }
-
-        protected void CloseIconPressed() => TryClose();
 
         public override bool TryOpen()
         {
@@ -34,17 +33,9 @@ namespace TemporalMirror
             return base.TryOpen();
         }
 
-        private void OnNewScrollbarValue(float value)
-        {
-            ElementBounds bounds = SingleComposer.GetContainer("stacklist").Bounds;
-
-            bounds.fixedY = 3 - value;
-            bounds.CalcWorldBounds();
-        }
-
         private void SetupDialog()
         {
-            ElementBounds[] buttons = new ElementBounds[Math.Max(capi.World.AllOnlinePlayers.Count() - 1, 1)];
+            ElementBounds[] buttons = new ElementBounds[Math.Max(capi.World.AllOnlinePlayers.Length - 1, 1)];
 
             buttons[0] = ElementBounds.Fixed(0, 0, 300, 40);
             for (int i = 1; i < buttons.Length; i++)
@@ -58,7 +49,10 @@ namespace TemporalMirror
             ElementBounds clipBounds = listBounds.ForkBoundingParent();
             ElementBounds insetBounds = listBounds.FlatCopy().FixedGrow(6).WithFixedOffset(-3, -3);
 
-            ElementBounds scrollbarBounds = ElementStdBounds.VerticalScrollbar(insetBounds);
+            ElementBounds scrollbarBounds = insetBounds
+                .CopyOffsetedSibling(insetBounds.fixedWidth + 3.0)
+                .WithFixedWidth(GuiElementScrollbar.DefaultScrollbarWidth)
+                .WithFixedPadding(GuiElementScrollbar.DeafultScrollbarPadding);
 
 
             ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(GuiStyle.ElementToDialogPadding).WithFixedOffset(0, GuiStyle.TitleBarHeight);
@@ -70,22 +64,20 @@ namespace TemporalMirror
 
 
             SingleComposer = capi.Gui
-                .CreateCompo("mirror-wormhole-dialog", dialogBounds)
-                .AddDialogTitleBar(DialogTitle, CloseIconPressed)
+                .CreateCompo(ConstantsCore.ModId + ":dlg-wormhole-title", dialogBounds)
+                .AddDialogTitleBar(DialogTitle, () => TryClose())
                 .AddDialogBG(bgBounds, false)
-                .BeginChildElements(bgBounds)
-            ;
+                .BeginChildElements(bgBounds);
 
             if (capi.World.AllOnlinePlayers.Count() == 1)
             {
                 SingleComposer
-                        .AddStaticText(
-                        Lang.Get("No available players"),
-                        CairoFont.WhiteSmallText(),
-                        buttons[0])
+                        .AddStaticText(Lang.Get(ConstantsCore.ModId + ":dlg-wormhole-empty"),
+                            CairoFont.WhiteSmallText(),
+                            buttons[0])
                     .EndChildElements()
-                    .Compose()
-                ;
+                    .Compose();
+
                 return;
             }
 
@@ -95,15 +87,23 @@ namespace TemporalMirror
                         .AddContainer(listBounds, "stacklist")
                     .EndClip()
                     .AddVerticalScrollbar(OnNewScrollbarValue, scrollbarBounds, "scrollbar")
-                .EndChildElements()
-            ;
+                .EndChildElements();
 
+            SetupPlayerList(buttons);
+
+            SingleComposer.Compose();
+            SingleComposer.GetScrollbar("scrollbar").SetHeights(
+                (float)insetBounds.fixedHeight,
+                (float)Math.Max(insetBounds.fixedHeight, listBounds.fixedHeight));
+        }
+
+        private void SetupPlayerList(ElementBounds[] buttons)
+        {
             var stacklist = SingleComposer.GetContainer("stacklist");
-
             var otherPlayers = capi.World.AllOnlinePlayers.Where((IPlayer op) => op != capi.World.Player);
             for (int i = 0; i < buttons.Length; i++)
             {
-                var tp = otherPlayers.ElementAt(i);
+                var targetPlayer = otherPlayers.ElementAt(i);
 
                 bool playerLowStability = capi.World.Player?.Entity?.GetBehavior<EntityBehaviorTemporalStabilityAffected>()?.OwnStability < 0.2;
                 bool nowStormActive = capi.ModLoader.GetModSystem<SystemTemporalStability>().StormData.nowStormActive;
@@ -111,40 +111,36 @@ namespace TemporalMirror
                 var font = CairoFont.WhiteSmallText();
 
                 stacklist.Add(new GuiElementTextButton(capi,
-                    (nowStormActive || playerLowStability) ? tp.PlayerName.Shuffle() : tp.PlayerName,
+                    (nowStormActive || playerLowStability) ? targetPlayer.PlayerName.Shuffle() : targetPlayer.PlayerName,
                     font,
                     CairoFont.WhiteSmallText(),
-                    () => OnClickItem(tp),
+                    () => OnPlayerButtonClick(targetPlayer),
                     buttons[i],
                     EnumButtonStyle.Normal
                 ));
             }
-
-            SingleComposer.GetScrollbar("scrollbar").SetHeights(
-                (float)Math.Min(listBounds.fixedHeight, (buttons.Last().fixedHeight + buttons.Last().fixedY)),
-                (float)(buttons.Last().fixedHeight + buttons.Last().fixedY)
-            );
-            //SingleComposer.GetScrollbar("scrollbar").ScrollToBottom();
-            //SingleComposer.GetScrollbar("scrollbar").CurrentYPosition = 0;
-            SingleComposer.Compose();
         }
 
-        private bool OnClickItem(IPlayer toPlayer)
+        private void OnNewScrollbarValue(float value)
         {
-            if (toPlayer.Entity == null)
+            ElementBounds bounds = SingleComposer.GetContainer("stacklist").Bounds;
+            bounds.fixedY = 3 - value;
+            bounds.CalcWorldBounds();
+        }
+
+        private bool OnPlayerButtonClick(IPlayer targetPlayer)
+        {
+            var activeSlot = capi.World.Player.InventoryManager.ActiveHotbarSlot;
+            if (activeSlot.Itemstack.Collectible is ItemMirror)
             {
-                TryClose();
-                return false;
+                activeSlot.Itemstack.Collectible.DamageItem(capi.World, capi.World.Player.Entity, activeSlot, 1);
+
+                capi.Network
+                    .GetChannel(ConstantsCore.ModId + "-wormhole-mirror")
+                    .SendPacket(targetPlayer.PlayerUID);
             }
 
-            capi.World.Player.Entity?.WatchedAttributes?.SetString("playerUID", toPlayer.PlayerUID);
-
-            double curr = capi.World.Player?.Entity?.WatchedAttributes.GetDouble("temporalStability") ?? 1;
-            capi.World.Player?.Entity?.WatchedAttributes.SetDouble("temporalStability", Math.Max(0, (double)curr - 0.1));
-
-            TryClose();
-
-            return true;
+            return TryClose();
         }
     }
 }

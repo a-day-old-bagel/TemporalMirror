@@ -1,0 +1,53 @@
+[
+  {
+    "ingredientPattern": "G,S,D",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "mirror-frame-*",
+        "name": "type"
+      },
+      "G": {
+        "type": "item",
+        "code": "game:gear-temporal"
+      },
+      "D": {
+        "type": "item",
+        "code": "game:gem-*"
+      }
+    },
+    "width": 1,
+    "height": 3,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "mirror-wormhole-{type}"
+    }
+  },
+  {
+    "ingredientPattern": "G,S,M",
+    "ingredients": {
+      "S": {
+        "type": "item",
+        "code": "mirror-wormhole-*",
+        "name": "type"
+      },
+      "G": {
+        "type": "item",
+        "code": "game:gear-temporal"
+      },
+      "M": {
+        "type": "item",
+        "code": "game:gear-rusty",
+        "quantity": 10
+      }
+    },
+    "width": 1,
+    "height": 3,
+    "shapeless": true,
+    "output": {
+      "type": "item",
+      "code": "mirror-wormhole-{type}"
+    }
+  }
+]
