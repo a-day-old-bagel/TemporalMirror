@@ -19,15 +19,15 @@ namespace TemporalMirror
         private readonly SimpleParticleProperties _particles = new SimpleParticleProperties()
         {
             MinQuantity = 1,
-            MinPos = new Vec3d(),
-            AddPos = new Vec3d(0.1, 0.1, 0.1),
+            MinPos = new Vec3d(-.5, 0, -.5),
+            AddPos = new Vec3d(1, 0.2, 1),
             MinVelocity = new Vec3f(-0.25f, 0.1f, -0.25f),
             AddVelocity = new Vec3f(0.5f, 0.2f, 0.5f),
-            LifeLength = 0.2f,
-            GravityEffect = 0.9f,
+            LifeLength = 0.5f,
+            GravityEffect = -0.9f,
             MinSize = 0.1f,
-            MaxSize = 0.1f,
-            ParticleModel = EnumParticleModel.Cube
+            MaxSize = 0.2f,
+            ParticleModel = EnumParticleModel.Quad
         };
 
         private ILoadedSound _sound;
@@ -105,11 +105,8 @@ namespace TemporalMirror
 
                 if (secondsUsed > 0.5)
                 {
-                    Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y, 0)
-                        .Ahead(0.5, byEntity.Pos.Pitch, byEntity.Pos.Yaw);
-
                     _particles.Color = GetRandomColor(api as ICoreClientAPI, slot.Itemstack);
-                    _particles.MinPos.Set(pos).Add(-0.05, -0.05, -0.05);
+                    _particles.MinPos.Set(byEntity.Pos.XYZ.Add(-.5, 0, -.5));
                     _particles.SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.SINUS, 0.1f);
 
                     byEntity.World.SpawnParticles(_particles);
