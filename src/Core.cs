@@ -1,4 +1,4 @@
-﻿using SharedUtils;
+using SharedUtils;
 using SharedUtils.Extensions;
 using Vintagestory.API.Common;
 

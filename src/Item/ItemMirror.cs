@@ -1,19 +1,22 @@
-﻿using System;
-using System.Text;
 using SharedUtils;
 using SharedUtils.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 
 namespace TemporalMirror
 {
     public class ItemMirror : Item
     {
-        readonly SimpleParticleProperties particles = new SimpleParticleProperties()
+        private readonly SimpleParticleProperties _particles = new SimpleParticleProperties()
         {
             MinQuantity = 1,
             MinPos = new Vec3d(),
@@ -27,62 +30,76 @@ namespace TemporalMirror
             ParticleModel = EnumParticleModel.Cube
         };
 
-        ILoadedSound sound;
+        private ILoadedSound _sound;
+
+        public bool IsFrame => Variant["type"] == "frame";
+        public bool IsMagic => Variant["type"] == "magic";
+        public bool IsWormhole => Variant["type"] == "wormhole";
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
-            string mirrorType = slot.Itemstack.Item.Variant["type"];
-
-            if (mirrorType == "frame") return;
-
-            if (mirrorType == "magic")
+            if (IsFrame)
             {
-                slot.Itemstack.Attributes.SetBool("savePointMode", false);
+                return;
+            }
 
+            if (IsMagic)
+            {
+                UpdateToNewPos(slot.Itemstack);
+
+                slot.Itemstack.Attributes.SetBool("savePointMode", false);
+                slot.Itemstack.Attributes.SetBool("teleported", false);
+
+                // save point
                 if (blockSel != null && byEntity.Controls.Sneak)
                 {
-                    slot.Itemstack.Attributes.SetInt("x", blockSel.Position.X);
-                    slot.Itemstack.Attributes.SetInt("y", blockSel.Position.Y);
-                    slot.Itemstack.Attributes.SetInt("z", blockSel.Position.Z);
-
-                    handling = EnumHandHandling.Handled;
+                    Vec3i point = blockSel.Position.ToVec3i() + blockSel.Face.Normali;
+                    slot.Itemstack.Attributes.SetVec3i("targetPos", point);
                     slot.Itemstack.Attributes.SetBool("savePointMode", true);
+                    handling = EnumHandHandling.Handled;
                     return;
                 }
 
-                if (slot.Itemstack.Collectible.Durability <= 1 || !slot.Itemstack.Attributes.HasAttribute("x"))
+                // teleport
+                if (slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack) > 1 &&
+                    slot.Itemstack.Attributes.HasAttribute("targetPosX"))
                 {
-                    return;
-                }
-
-                if (byEntity.World is IClientWorldAccessor world)
-                {
-                    sound = world.LoadSound(new SoundParams()
+                    if (byEntity.World is IClientWorldAccessor world)
                     {
-                        Location = new AssetLocation(ConstantsCore.ModId, "sounds/teleport.ogg"),
-                        ShouldLoop = false,
-                        Position = byEntity.Pos.XYZ.ToVec3f(),
-                        DisposeOnFinish = true,
-                        Volume = 1f,
-                        Pitch = 0.7f
-                    });
-                    sound?.Start();
-                }
+                        _sound = world.LoadSound(new SoundParams()
+                        {
+                            Location = new AssetLocation(ConstantsCore.ModId, "sounds/teleport.ogg"),
+                            ShouldLoop = false,
+                            Position = byEntity.Pos.XYZ.ToVec3f(),
+                            DisposeOnFinish = true,
+                            Volume = 1f,
+                            Pitch = 0.7f
+                        });
+                        _sound?.Start();
+                    }
 
-                handling = EnumHandHandling.PreventDefault;
+                    handling = EnumHandHandling.PreventDefault;
+                    return;
+                }
             }
+
+            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
-            if (slot.Itemstack.Attributes.GetBool("savePointMode", false)) return false;
+            if (slot.Itemstack.Attributes.GetBool("savePointMode"))
+            {
+                return false;
+            }
 
+            // visual effects
             if (api.Side == EnumAppSide.Client)
             {
                 ModelTransform tf = new ModelTransform();
                 tf.EnsureDefaultValues();
 
-                float trans = Math.Min(secondsUsed, Constants.USE_SECONDS);
+                float trans = Math.Min(secondsUsed, Constants.InteractionTime);
                 tf.Translation.Set(-trans * 0.05f, trans * 0.025f, trans * 0.05f);
                 byEntity.Controls.UsingHeldItemTransformAfter = tf;
 
@@ -91,33 +108,46 @@ namespace TemporalMirror
                     Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y, 0)
                         .Ahead(0.5, byEntity.Pos.Pitch, byEntity.Pos.Yaw);
 
-                    particles.Color = GetRandomColor(api as ICoreClientAPI, slot.Itemstack);
-                    particles.MinPos.Set(pos).Add(-0.05, -0.05, -0.05);
-                    particles.SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.SINUS, 0.5f);
+                    _particles.Color = GetRandomColor(api as ICoreClientAPI, slot.Itemstack);
+                    _particles.MinPos.Set(pos).Add(-0.05, -0.05, -0.05);
+                    _particles.SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.SINUS, 0.1f);
 
-                    byEntity.World.SpawnParticles(particles);
+                    byEntity.World.SpawnParticles(_particles);
                 }
             }
 
-            if (secondsUsed > Constants.USE_SECONDS)
+            if (secondsUsed > Constants.InteractionTime)
             {
-                if (slot.Itemstack.Item.Variant["type"] == "magic")
+                if (IsMagic)
                 {
-                    slot.Itemstack.Attributes.SetVec3i("beforeTpPos", byEntity.Pos.XYZInt.AddCopy(0, 0, 0));
-
-                    if (api.Side == EnumAppSide.Server && !byEntity.Teleporting && byEntity is EntityPlayer entityPlayer)
+                    if (byEntity.Teleporting)
                     {
-                        TeleportToPoint(slot, entityPlayer);
-                        return false;
+                        return true;
+                    }
+                    else
+                    {
+                        if (slot.Itemstack.Attributes.GetBool("teleported"))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            if (api.Side == EnumAppSide.Server && byEntity is EntityPlayer entityPlayer)
+                            {
+                                TeleportToPoint(slot, entityPlayer);
+                                return true;
+                            }
+                        }
                     }
                 }
 
-                else if (slot.Itemstack.Item.Variant["type"] == "wormhole")
+                if (IsWormhole)
                 {
                     if (api.Side == EnumAppSide.Client)
                     {
                         GuiDialogWormholeMirror dlg = new GuiDialogWormholeMirror(api as ICoreClientAPI);
                         dlg.TryOpen();
+                        return false;
                     }
                 }
             }
@@ -125,140 +155,170 @@ namespace TemporalMirror
             return true;
         }
 
-        private void TeleportToPoint(ItemSlot slot, EntityPlayer entityPlayer)
-        {
-            Vec3i currentPoint = entityPlayer.Pos.XYZInt;
-            Vec3i endPoint = new Vec3i(
-                    slot.Itemstack.Attributes.GetInt("x"),
-                    slot.Itemstack.Attributes.GetInt("y"),
-                    slot.Itemstack.Attributes.GetInt("z"));
-
-            int maxDistance = slot.Itemstack.Collectible.Durability - 1;
-            int dist = (int)currentPoint.DistanceTo(endPoint);
-            bool toEnd = (dist <= maxDistance);
-
-            if (!toEnd)
-            {
-                int nX = currentPoint.X - endPoint.X;
-                int nZ = currentPoint.Z - endPoint.Z;
-                int k = maxDistance / dist;
-
-                endPoint = new Vec3i(
-                    currentPoint.X + nX / k,
-                    api.World.BlockAccessor.MapSizeY,
-                    currentPoint.Z + nZ / k
-                );
-            }
-
-            var sapi = api as ICoreServerAPI;
-            int chunkSize = sapi.WorldManager.ChunkSize;
-
-            entityPlayer.TeleportToDouble(endPoint.X + 0.5, endPoint.Y + 1, endPoint.Z + 0.5);
-            sapi.WorldManager.LoadChunkColumnPriority(endPoint.X / chunkSize, endPoint.Z / chunkSize, new ChunkLoadOptions()
-            {
-                OnLoaded = () =>
-                {
-                    if (!toEnd)
-                    {
-                        endPoint.Y = sapi.WorldManager.GetSurfacePosY(endPoint.X, endPoint.Z) ?? endPoint.Y;
-                    }
-
-                    string playerName = entityPlayer.Player.PlayerName;
-                    api.World.Logger.ModNotification("Teleporting {0} to {1}", playerName, endPoint);
-
-                    entityPlayer.TeleportToDouble(endPoint.X + 0.5, endPoint.Y + 1, endPoint.Z + 0.5, () =>
-                    {
-                        api.World.Logger.ModNotification("Teleported {0} to {1}", playerName, endPoint);
-
-                        if (entityPlayer.Player.WorldData.CurrentGameMode != EnumGameMode.Creative || true)
-                        {
-                            bool savePointMode = slot.Itemstack.Attributes.GetBool("savePointMode", false);
-                            Vec3i beforeTpPos = slot.Itemstack.Attributes.GetVec3i("beforeTpPos");
-
-                            if (!savePointMode && beforeTpPos != null)
-                            {
-                                int cost = (int)beforeTpPos.DistanceTo(entityPlayer.Pos.XYZInt);
-                                slot.Itemstack.Collectible.DamageItem(entityPlayer.World, entityPlayer, slot, cost);
-                            }
-                        }
-                    });
-                }
-            });
-        }
-
         public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
         {
-            bool flag = base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason);
-
-            if (flag)
+            if (secondsUsed > Constants.InteractionTime)
             {
-                sound?.Stop();
+                if (IsMagic)
+                {
+                    return slot.Itemstack.Attributes.GetBool("teleported");
+                }
             }
 
-            return flag;
+            return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason);
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
-            sound?.Stop();
-
+            _sound?.Stop();
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+        }
+
+        private void TeleportToPoint(ItemSlot slot, EntityPlayer entityPlayer)
+        {
+            Vec3i startPos = entityPlayer.Pos.XYZInt;
+            Vec3i targetPos = slot.Itemstack.Attributes.GetVec3i("targetPos");
+
+            int maxDistance = slot.Itemstack.Collectible.Durability - 1;
+            int distance = (int)startPos.DistanceTo(targetPos);
+            bool partialTeleport = distance > maxDistance;
+
+            if (partialTeleport)
+            {
+                float k = (float)maxDistance / distance;
+                targetPos = new Vec3i
+                {
+                    X = startPos.X + (int)((targetPos.X - startPos.X) * k),
+                    Y = startPos.Y + (int)((targetPos.Y - startPos.Y) * k),
+                    Z = startPos.Z + (int)((targetPos.Z - startPos.Z) * k)
+                };
+            }
+
+            string playerName = entityPlayer.Player.PlayerName;
+            api.World.Logger.ModNotification("Teleporting {0} to {1}", playerName, targetPos);
+
+            // fake teleport for prevent player movement
+            entityPlayer.TeleportToDouble(targetPos.X + 0.5, targetPos.Y + 1, targetPos.Z + 0.5);
+
+            var sapi = api as ICoreServerAPI;
+            int chunkSize = sapi.WorldManager.ChunkSize;
+            int chunkX = targetPos.X / chunkSize;
+            int chunkZ = targetPos.Z / chunkSize;
+
+            sapi.WorldManager.LoadChunkColumnPriority(chunkX, chunkZ, new ChunkLoadOptions()
+            {
+                OnLoaded = () =>
+                {
+                    api.World.Logger.ModNotification("Teleported {0} to {1}", playerName, targetPos);
+
+                    int cost = (int)startPos.DistanceTo(entityPlayer.Pos.XYZInt);
+                    slot.Itemstack.Attributes.SetBool("teleported", true);
+
+                    // up to top surface block for partial teleport
+                    if (partialTeleport)
+                    {
+                        int? surfacePos = sapi.WorldManager.GetSurfacePosY(targetPos.X, targetPos.Z);
+                        targetPos.Y = surfacePos ?? targetPos.Y;
+
+                        cost = GetRemainingDurability(slot.Itemstack);
+
+                        entityPlayer.TeleportToDouble(targetPos.X + 0.5, targetPos.Y + 1, targetPos.Z + 0.5, () =>
+                        {
+                            api.World.Logger.ModNotification("Up {0} to surface {1}", playerName, targetPos);
+                        });
+                    }
+
+                    DamageItem(entityPlayer.World, entityPlayer, slot, cost);
+                }
+            });
+        }
+
+        public override void DamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount = 1)
+        {
+            // prevent break mirror
+            if (amount >= GetRemainingDurability(itemslot.Itemstack))
+            {
+                amount = GetRemainingDurability(itemslot.Itemstack) - 1;
+            }
+
+            base.DamageItem(world, byEntity, itemslot, amount);
         }
 
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
         {
-            if (inSlot.Itemstack.Item.Variant["type"] == "magic")
+            if (IsMagic)
             {
-                return new WorldInteraction[]
+                return base.GetHeldInteractionHelp(inSlot).Append(new WorldInteraction[]
                 {
-                new WorldInteraction()
-                {
-                    ActionLangCode = ConstantsCore.ModId + ":heldhelp-teleport",
-                    MouseButton = EnumMouseButton.Right
-                },
-                new WorldInteraction()
-                {
-                    ActionLangCode = ConstantsCore.ModId + ":heldhelp-savepoint",
-                    MouseButton = EnumMouseButton.Right,
-                    HotKeyCode = "sneak"
-                }
-                };
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = ConstantsCore.ModId + ":heldhelp-teleport",
+                        MouseButton = EnumMouseButton.Right
+                    },
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = ConstantsCore.ModId + ":heldhelp-savepoint",
+                        MouseButton = EnumMouseButton.Right,
+                        HotKeyCode = "shift"
+                    }
+                });
             }
-            else if (inSlot.Itemstack.Item.Variant["type"] == "wormhole")
+
+            if (IsWormhole)
             {
-                return new WorldInteraction[]
+                return base.GetHeldInteractionHelp(inSlot).Append(new WorldInteraction[]
                 {
-                new WorldInteraction()
-                {
-                    ActionLangCode = ConstantsCore.ModId + ":heldhelp-teleport-to-player",
-                    MouseButton = EnumMouseButton.Right
-                },
-                };
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = ConstantsCore.ModId + ":heldhelp-teleport-to-player",
+                        MouseButton = EnumMouseButton.Right
+                    }
+                });
             }
-            else return null;
+
+            return base.GetHeldInteractionHelp(inSlot);
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
-            if (inSlot.Itemstack.Attributes.HasAttribute("x"))
+
+            UpdateToNewPos(inSlot.Itemstack);
+
+            Vec3i targetPos = inSlot.Itemstack.Attributes.GetVec3i("targetPos", null);
+            Vec3i playerPos = (world as IClientWorldAccessor)?.Player?.Entity?.Pos.XYZInt;
+
+            if (targetPos != null && playerPos != null)
             {
-                BlockPos tpPos = new BlockPos().Set(
-                        inSlot.Itemstack.Attributes.GetInt("x"),
-                        inSlot.Itemstack.Attributes.GetInt("y") + 1,
-                        inSlot.Itemstack.Attributes.GetInt("z")
-                );
-                BlockPos mapTpPos = MapPos(tpPos);
-                dsc.AppendLine(Lang.Get("Saved point: {0}, {1}, {2}", mapTpPos.X, mapTpPos.Y, mapTpPos.Z));
-                dsc.AppendLine(Lang.Get("Distance: {0} m", (int)(api as ICoreClientAPI)?.World?.Player?.Entity?.Pos.AsBlockPos.DistanceTo(tpPos)));
+                Vec3i mapPos = ToVisiblePos(targetPos, world);
+                dsc.AppendLine(Lang.Get("Saved point: {0}, {1}, {2}", mapPos.X, mapPos.Y, mapPos.Z));
+                dsc.AppendLine(Lang.Get("Distance: {0} m", (int)playerPos.DistanceTo(targetPos)));
             }
         }
 
-        private BlockPos MapPos(BlockPos pos)
+        private static Vec3i ToVisiblePos(Vec3i pos, IWorldAccessor world)
         {
-            int x = pos.X - api.World.DefaultSpawnPosition.XYZInt.X;
-            int z = pos.Z - api.World.DefaultSpawnPosition.XYZInt.Z;
-            return new BlockPos(x, pos.Y + 1, z);
+            int x = pos.X - world.DefaultSpawnPosition.XYZInt.X;
+            int z = pos.Z - world.DefaultSpawnPosition.XYZInt.Z;
+            return new Vec3i(x, pos.Y + 1, z);
+        }
+
+        /// <summary> Legacy fix 1.6 -> 1.7 </summary>
+        private static void UpdateToNewPos(ItemStack itemstack)
+        {
+            if (itemstack.Attributes.HasAttribute("x"))
+            {
+                itemstack.Attributes.SetVec3i("targetPos", new Vec3i()
+                {
+                    X = itemstack.Attributes.GetInt("x"),
+                    Y = itemstack.Attributes.GetInt("y"),
+                    Z = itemstack.Attributes.GetInt("z")
+                });
+
+                itemstack.Attributes.RemoveAttribute("x");
+                itemstack.Attributes.RemoveAttribute("y");
+                itemstack.Attributes.RemoveAttribute("z");
+            }
         }
     }
 }
