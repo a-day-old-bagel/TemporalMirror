@@ -23,18 +23,27 @@
     }
   ],
   "texturesByType": {
-    "*-frame-wood": { "all": { "base": "game:item/tool/material/{material}" } },
+    "*-frame-wood": {
+      "glass": { "base": "game:block/transparent" },
+      "frame": { "base": "game:item/tool/material/wood" }
+    },
     "*-wood": {
       "glass": { "base": "item/mirror/{type}" },
-      "frame": { "base": "game:item/tool/material/{material}" }
+      "frame": { "base": "game:item/tool/material/wood" }
     },
-    "*-frame-*": { "all": { "base": "game:block/metal/ingot/{material}" } },
+    "*-frame-*": {
+      "glass": { "base": "game:block/transparent" },
+      "frame": { "base": "game:block/metal/ingot/{material}" }
+    },
     "*": {
       "glass": { "base": "item/mirror/{type}" },
       "frame": { "base": "game:block/metal/ingot/{material}" }
     }
   },
-  "shape": { "base": "item/mirror" },
+  "shapeByType": {
+    "*-wood-*": { "base": "item/mirror" },
+    "*": { "base": "item/mirror-metal" }
+  },
   "creativeinventory": {
     "general": [ "*" ],
     "items": [ "*" ],
@@ -61,7 +70,7 @@
     "rackable": true,
     "toolrackTransform": {
       "translation": {
-        "x": 0.025,
+        "x": 0.125,
         "y": 0.5,
         "z": 0
       },
@@ -80,14 +89,14 @@
   },
   "fpHandTransform": {
     "translation": {
-      "x": 0,
-      "y": 0.1,
+      "x": 0.6,
+      "y": 0.3,
       "z": -0.8
     },
     "rotation": {
       "x": 59,
-      "y": 27,
-      "z": 26
+      "y": 28,
+      "z": 30
     },
     "origin": {
       "x": 0.5,
