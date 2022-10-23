@@ -45,6 +45,7 @@
     "width": 1,
     "height": 3,
     "shapeless": true,
+    "recipeGroup": 1,
     "output": {
       "type": "item",
       "code": "mirror-wormhole-{type}"
