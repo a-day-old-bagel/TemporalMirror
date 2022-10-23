@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net461</TargetFramework>
 		<Configurations>Debug;Release;Publish</Configurations>
@@ -12,8 +12,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<MinGameVersion>1.16.0</MinGameVersion>
-		<RunGameVersion>1.17.3</RunGameVersion>
+		<MinGameVersion>1.17.0</MinGameVersion>
+		<RunGameVersion>1.17.9</RunGameVersion>
 	</PropertyGroup>
 
 	<ItemGroup Label="Game Refs">
@@ -45,7 +45,6 @@
 			<HintPath>$(VINTAGE_STORY)/$(MinGameVersion)/Lib/cairo-sharp.dll</HintPath>
 		</Reference>
 	</ItemGroup>
-
 
 	<Target Name="CollectMod" AfterTargets="PostBuildEvent">
 		<RemoveDir Directories="mods/$(TargetName)" />
