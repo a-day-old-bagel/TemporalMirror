@@ -10,16 +10,16 @@
   "item-mirror-magic-meteoriciron": "Темпоральное зеркало (метеоритное железо)",
   "item-mirror-magic-steel": "Темпоральное зеркало (сталь)",
 
-  "item-mirror-wormhole-wood": "[WIP] Зеркало-червоточина (дерево)",
-  "item-mirror-wormhole-copper": "[WIP] Зеркало-червоточина (медь)",
-  "item-mirror-wormhole-tinbronze": "[WIP] Зеркало-червоточина (оловянная бронза)",
-  "item-mirror-wormhole-bismuthbronze": "[WIP] Зеркало-червоточина (висмутовая бронза)",
-  "item-mirror-wormhole-blackbronze": "[WIP] Зеркало-червоточина (черная бронза)",
-  "item-mirror-wormhole-gold": "[WIP] Зеркало-червоточина (золото)",
-  "item-mirror-wormhole-silver": "[WIP] Зеркало-червоточина (серебро)",
-  "item-mirror-wormhole-iron": "[WIP] Зеркало-червоточина (железо)",
-  "item-mirror-wormhole-meteoriciron": "[WIP] Зеркало-червоточина (метеоритное железо)",
-  "item-mirror-wormhole-steel": "[WIP] Зеркало-червоточина (сталь)",
+  "item-mirror-wormhole-wood": "Зеркало-червоточина (дерево)",
+  "item-mirror-wormhole-copper": "Зеркало-червоточина (медь)",
+  "item-mirror-wormhole-tinbronze": "Зеркало-червоточина (оловянная бронза)",
+  "item-mirror-wormhole-bismuthbronze": "Зеркало-червоточина (висмутовая бронза)",
+  "item-mirror-wormhole-blackbronze": "Зеркало-червоточина (черная бронза)",
+  "item-mirror-wormhole-gold": "Зеркало-червоточина (золото)",
+  "item-mirror-wormhole-silver": "Зеркало-червоточина (серебро)",
+  "item-mirror-wormhole-iron": "Зеркало-червоточина (железо)",
+  "item-mirror-wormhole-meteoriciron": "Зеркало-червоточина (метеоритное железо)",
+  "item-mirror-wormhole-steel": "Зеркало-червоточина (сталь)",
 
   "item-mirror-frame-wood": "Рамка для зеркала (дерево)",
   "item-mirror-frame-copper": "Рамка для зеркала (медь)",
@@ -44,5 +44,8 @@
   "Teleported to {0}": "Телепортирован к {0}",
   "Saved point: {0}, {1}, {2}": "Сохраненная точка: {0}, {1}, {2}",
   "Return point saved at {0}": "Точка возврата сохранена в {0}",
-  "Distance: {0} m": "Расстояние: {0} м"
+  "Distance: {0} m": "Расстояние: {0} м",
+
+  "dlg-wormhole-title": "Выберите игрока",
+  "dlg-wormhole-empty": "Нет доступных игроков"
 }

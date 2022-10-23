@@ -10,16 +10,16 @@
   "item-mirror-magic-meteoriciron": "Temporal mirror (Meteoric iron)",
   "item-mirror-magic-steel": "Temporal mirror (Steel)",
 
-  "item-mirror-wormhole-wood": "[WIP] Wormhole mirror (Wood)",
-  "item-mirror-wormhole-copper": "[WIP] Wormhole mirror (Copper)",
-  "item-mirror-wormhole-tinbronze": "[WIP] Wormhole mirror (Tin bronze)",
-  "item-mirror-wormhole-bismuthbronze": "[WIP] Wormhole mirror (Bismuth bronze)",
-  "item-mirror-wormhole-blackbronze": "[WIP] Wormhole mirror (Black bronze)",
-  "item-mirror-wormhole-gold": "[WIP] Wormhole mirror (Gold)",
-  "item-mirror-wormhole-silver": "[WIP] Wormhole mirror (Silver)",
-  "item-mirror-wormhole-iron": "[WIP] Wormhole mirror (Iron)",
-  "item-mirror-wormhole-meteoriciron": "[WIP] Wormhole mirror (Meteoric iron)",
-  "item-mirror-wormhole-steel": "[WIP] Wormhole mirror (Steel)",
+  "item-mirror-wormhole-wood": "Wormhole mirror (Wood)",
+  "item-mirror-wormhole-copper": "Wormhole mirror (Copper)",
+  "item-mirror-wormhole-tinbronze": "Wormhole mirror (Tin bronze)",
+  "item-mirror-wormhole-bismuthbronze": "Wormhole mirror (Bismuth bronze)",
+  "item-mirror-wormhole-blackbronze": "Wormhole mirror (Black bronze)",
+  "item-mirror-wormhole-gold": "Wormhole mirror (Gold)",
+  "item-mirror-wormhole-silver": "Wormhole mirror (Silver)",
+  "item-mirror-wormhole-iron": "Wormhole mirror (Iron)",
+  "item-mirror-wormhole-meteoriciron": "Wormhole mirror (Meteoric iron)",
+  "item-mirror-wormhole-steel": "Wormhole mirror (Steel)",
 
   "item-mirror-frame-wood": "Mirror frame (Wood)",
   "item-mirror-frame-copper": "Mirror frame (Copper)",
@@ -44,5 +44,8 @@
   "Teleported to {0}": "Teleported to {0}",
   "Saved point: {0}, {1}, {2}": "Saved point: {0}, {1}, {2}",
   "Return point saved at {0}": "Return point saved at {0}",
-  "Distance: {0} m": "Distance: {0} m"
+  "Distance: {0} m": "Distance: {0} m",
+
+  "dlg-wormhole-title": "Select player",
+  "dlg-wormhole-empty": "No available players"
 }
