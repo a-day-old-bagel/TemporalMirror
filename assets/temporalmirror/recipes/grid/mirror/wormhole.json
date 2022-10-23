@@ -46,6 +46,7 @@
     "height": 3,
     "shapeless": true,
     "recipeGroup": 1,
+    "averageDurability": false,
     "output": {
       "type": "item",
       "code": "mirror-wormhole-{type}"
