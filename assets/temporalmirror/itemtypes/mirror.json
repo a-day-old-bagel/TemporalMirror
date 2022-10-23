@@ -41,7 +41,7 @@
     }
   },
   "shapeByType": {
-    "*-wood-*": { "base": "item/mirror" },
+    "*-wood": { "base": "item/mirror" },
     "*": { "base": "item/mirror-metal" }
   },
   "creativeinventory": {
