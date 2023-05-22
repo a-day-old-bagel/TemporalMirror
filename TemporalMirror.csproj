@@ -12,8 +12,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<MinGameVersion>1.17.0</MinGameVersion>
-		<RunGameVersion>1.17.9</RunGameVersion>
+		<MinGameVersion>1.18.0</MinGameVersion>
+		<RunGameVersion>1.18.5</RunGameVersion>
 	</PropertyGroup>
 
 	<ItemGroup Label="Game Refs">

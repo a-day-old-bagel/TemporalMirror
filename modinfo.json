@@ -4,9 +4,9 @@
   "name": "Temporal Mirror",
   "authors": [ "DArkHekRoMaNT" ],
   "description": "Adds teleportation mirrors",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "dependencies": {
-    "game": "1.17.0"
+    "game": "1.18.0"
   },
   "website": "https://github.com/DArkHekRoMaNT/TemporalMirror"
 }
